@@ -1,0 +1,13 @@
+Stage changes:
+git add .
+
+Commit changes:
+git commit -m "Your commit message"
+
+Push to GitHub:
+git push
+
+
+git add . 
+git commit -m "Your commit message"
+git push
