@@ -18,6 +18,8 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
   const [showAll, setShowAll] = useState(true)
 
+  const url = 'http://localhost:3001/persons'
+
   const hook = () => {
     axios
       .get('http://localhost:3001/persons')
@@ -40,9 +42,16 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    setPersons(persons.concat(personObj))
-    setNewName('')
-    setnewNumber('')
+    axios
+      .post(url, personObj)
+      .then (response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setnewNumber('')
+      })
+    // setPersons(persons.concat(personObj))
+    // setNewName('')
+    // setnewNumber('')
   }
 
   const addFilter = (event) => {
