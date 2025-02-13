@@ -4,6 +4,7 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Numbers from './components/Numbers'
+import phoneService from './services/phonebook'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -21,13 +22,18 @@ const App = () => {
   const url = 'http://localhost:3001/persons'
 
   const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then (response => {
-        console.log(response.data)
-        setPersons(response.data)
-        // setPersons(response.name)
-        // setnewNumber(response.number)
+    // axios
+    //   .get('http://localhost:3001/persons')
+    //   .then (response => {
+    //     console.log(response.data)
+    //     setPersons(response.data)
+    //     // setPersons(response.name)
+    //     // setnewNumber(response.number)
+    //   })
+    phoneService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }
   useEffect(hook, [])
@@ -42,13 +48,19 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    axios
-      .post(url, personObj)
-      .then (response => {
-        setPersons(persons.concat(response.data))
+    phoneService.create(personObj)
+      .then(response => {
+        setPersons(persons.concat(response))
         setNewName('')
         setnewNumber('')
       })
+    // axios
+    //   .post(url, personObj)
+    //   .then (response => {
+    //     setPersons(persons.concat(response.data))
+    //     setNewName('')
+    //     setnewNumber('')
+    //   })
     // setPersons(persons.concat(personObj))
     // setNewName('')
     // setnewNumber('')
