@@ -84,6 +84,17 @@ const App = () => {
     setShowAll(true)
   }
 
+  const deleteBtn =(id) => {
+    phoneService
+      .deleteId(id)
+      .then ( () => {
+        setPersons(persons.filter( person => person.id !== id))
+      })
+      .catch (error => {
+        console.error("Already deleted", error);
+      })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -105,6 +116,7 @@ const App = () => {
 
       <h2>Numbers</h2>
       <Numbers
+        deleteBtn={deleteBtn}
         showAllBtn={showAllBtn}
         peopleToShow={peopleToShow}
       />
