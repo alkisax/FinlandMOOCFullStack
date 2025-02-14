@@ -4,15 +4,10 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Numbers from './components/Numbers'
-// import phoneService from './services/phonebook'
+import phoneService from './services/phonebook'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    // { name: 'Arto Hellas', phone: '040-123456', id: 1 },
-    // { name: 'Ada Lovelace', phone: '39-44-5323523', id: 2 },
-    // { name: 'Dan Abramov', phone: '12-43-234345', id: 3 },
-    // { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 4 }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setnewNumber] = useState('')
   const [filter, setFilter] = useState('')
@@ -21,22 +16,26 @@ const App = () => {
 
   const url = 'http://localhost:3001/persons'
 
-  const hook = () => {
-    axios
-      .get(url)
-      .then (response => {
-        console.log(response.data)
-        setPersons(response.data)
-        // setPersons(response.name)
-        // setnewNumber(response.number)
-      })
-    // phoneService
-    //   .getAll()
-    //   .then(initialPersons => {
-    //     setPersons(initialPersons)
-    //   })
-  }
-  useEffect(hook, [])
+  // const hook = () => {
+  //   axios
+  //     .get(url)
+  //     .then (response => {
+  //       console.log(response.data)
+  //       setPersons(response.data)
+  //       // setPersons(response.name)
+  //       // setnewNumber(response.number)
+  //   })
+  // }
+  // useEffect(hook, [])
+
+  useEffect(() => {
+    phoneService
+      .getAll()
+      .then(responce => {
+        setPersons(responce.data)
+    })
+  }, [])
+
 
   const addPerson = (event) => {
     event.preventDefault()
