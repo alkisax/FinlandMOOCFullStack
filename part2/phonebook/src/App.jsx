@@ -1,6 +1,6 @@
 //
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Numbers from './components/Numbers'
@@ -9,12 +9,10 @@ import phoneService from './services/phonebook'
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
-  const [newNumber, setnewNumber] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [showAll, setShowAll] = useState(true)
-
-  const url = 'http://localhost:3001/persons'
 
   // const hook = () => {
   //   axios
@@ -31,8 +29,8 @@ const App = () => {
   useEffect(() => {
     phoneService
       .getAll()
-      .then(responce => {
-        setPersons(responce.data)
+      .then(response => {
+        setPersons(response.data)
     })
   }, [])
 
@@ -47,22 +45,13 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    // phoneService.create(personObj)
-    //   .then(response => {
-    //     setPersons(persons.concat(response))
-    //     setNewName('')
-    //     setnewNumber('')
-    //   })
-    axios
-      .post(url, personObj)
-      .then (response => {
+    phoneService
+      .create(personObj)
+      .then(response => {
         setPersons(persons.concat(response.data))
         setNewName('')
-        setnewNumber('')
-      })
-    // setPersons(persons.concat(personObj))
-    // setNewName('')
-    // setnewNumber('')
+        setNewNumber('')
+    })
   }
 
   const addFilter = (event) => {
@@ -79,7 +68,7 @@ const App = () => {
 
   const handlePhoneChange = (event) => {
     console.log(event.target.value);
-    setnewNumber(event.target.value)    
+    setNewNumber(event.target.value)    
   }
 
   const handleFilterChange = (event) => {
