@@ -85,7 +85,9 @@ const App = () => {
   }
 
   const deleteBtn =(id) => {
-    phoneService
+    const tmpName = persons.find(person => person.id === id).name
+    if (window.confirm(`Are you sure you want to delete ${tmpName} contact?`)){
+          phoneService
       .deleteId(id)
       .then ( () => {
         setPersons(persons.filter( person => person.id !== id))
@@ -93,6 +95,7 @@ const App = () => {
       .catch (error => {
         console.error("Already deleted", error);
       })
+    }
   }
 
   return (
