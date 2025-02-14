@@ -5,6 +5,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Numbers from './components/Numbers'
 import phoneService from './services/phonebook'
+import Message from './components/Message'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -13,6 +14,8 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [message, setMessage] = useState('')
+  const [type, setType] = useState('')
 
   // const hook = () => {
   //   axios
@@ -54,14 +57,29 @@ const App = () => {
               );
               setNewName('');
               setNewNumber('');
+              setMessage(`${existingPerson.name} phone updated.`)
+              setType('green')
+              setTimeout (() => {
+                setMessage(null)
+              }, 3000)
             })
             .catch(error => {
               console.error('Error updating person:', error);
+              setMessage(`Information of ${existingPerson.name} has already been removed from server`)
+              setType('error')
+              setTimeout (() => {
+                setMessage(null)
+              }, 3000)
             });
         }        
       } else {
       console.log("same name/number");
       alert(`${newName} is already added to phonebook`)
+      setMessage(`${newName} already eixsts.`)
+      setType('error')
+      setTimeout (() => {
+        setMessage(null)
+      }, 3000)    
       return
       }
     } else {
@@ -75,6 +93,11 @@ const App = () => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
+          setMessage(`Added ${newName}.`)
+          setType('green')
+          setTimeout (() => {
+            setMessage(null)
+          }, 3000) 
       })
     }
   }
@@ -116,15 +139,26 @@ const App = () => {
       .deleteId(id)
       .then ( () => {
         setPersons(persons.filter( person => person.id !== id))
+        setMessage(`${tmpName} removed.`)
+        setType('error')
+        setTimeout (() => {
+          setMessage(null)
+        }, 3000) 
       })
       .catch (error => {
         console.error("Already deleted", error);
+        setMessage(`${tmpName} Already deleted.`)
+        setType('error')
+        setTimeout (() => {
+          setMessage(null)
+        }, 3000) 
       })
     }
   }
 
   return (
     <div>
+      <Message message={message} type={type} />
       <h2>Phonebook</h2>
       <Filter 
         newFilter={newFilter} 
