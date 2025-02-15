@@ -1,9 +1,7 @@
 const OneCountry = ({ selectedCountry }) => {
+  console.log("entered one country");  
   return (
     <>
-      <p>one country</p>
-
-
       <div>
         <h2>{selectedCountry.name.common}</h2>
         <p><strong>Official Name:</strong> {selectedCountry.name.official}</p>

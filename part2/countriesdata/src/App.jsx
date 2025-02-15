@@ -11,7 +11,7 @@ const App = () => {
   const [ filter, setFilter ] = useState('')
   const [ countries, setCountries ] = useState([])
   const [ toggleState, setToggleState] = useState('')
-  const [ countryId, setCountryId ] = useState(0)
+  // const [ countryId, setCountryId ] = useState(0)
   const [ selectedCountry, setSelectedCountry ] = useState([])
 
   const url = 'https://studies.cs.helsinki.fi/restcountries/api/all'
@@ -44,9 +44,9 @@ const App = () => {
 
   useEffect (() => {
     if (filteredCountries.length === 0) {
-    setToggleState("noResults");
+      setToggleState("noResults");
     } else if (filteredCountries.length === 1) {
-      setCountryId(filteredCountries[0].id)
+      // setCountryId(filteredCountries[0].id)
       setSelectedCountry(filteredCountries[0])
       setToggleState("oneResult");
     } else if (filteredCountries.length > 1 && filteredCountries.length <= 10) {
@@ -55,6 +55,17 @@ const App = () => {
       setToggleState("tooManyResults");
     }
   }, [filteredCountries]) //check lesson, call aggain at every filtered countries change
+
+  const viewBtn = (cca3) => {
+    console.log("btn pressed")    
+    const country = filteredCountries.find(country => cca3 === country.cca3)
+    const countryName = country.name.common
+    console.log("selected cca3", country.cca3);    
+    console.log("name: ", countryName);
+    setFilter(countryName)
+    setSelectedCountry(country)
+    setToggleState("oneResult");
+  }
 
   return (
     <div>
@@ -72,6 +83,7 @@ const App = () => {
 
         {toggleState === "multipleResults" && <CountryList 
           filteredCountries={filteredCountries}
+          viewBtn={viewBtn}
         />}
 
         {toggleState === "tooManyResults" && <TooMany />}
