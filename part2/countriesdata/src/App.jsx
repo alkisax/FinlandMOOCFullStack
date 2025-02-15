@@ -6,6 +6,12 @@ import CountryList from "./components/CountryList"
 import NoCountries from "./components/NoCountries"
 import OneCountry from "./components/OneCountry"
 
+const apiKey = import.meta.env.VITE_APIKEY;
+console.log(import.meta.env)
+if (!apiKey) {
+  console.error('API key is missing!');
+}
+
 const App = () => {
   const [ newFilter, setNewFilter] = useState('')
   const [ filter, setFilter ] = useState('')
@@ -79,6 +85,7 @@ const App = () => {
 
         {toggleState === "oneResult" && <OneCountry
           selectedCountry={selectedCountry}
+          apiKey={apiKey}
         />}
 
         {toggleState === "multipleResults" && <CountryList 
