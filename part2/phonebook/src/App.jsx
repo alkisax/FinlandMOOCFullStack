@@ -31,27 +31,19 @@ const App = () => {
 
   useEffect(() => {
     phoneService
-      .getAll()
+      .getAll({
+        params: { name: newName, number: newNumber }
+      })
       .then(response => {
         console.log("Fetched persons:", response.data);
         setPersons(response.data)
-    })
-  }, [])
-
-  // useEffect(() => {
-  //   phoneService
-  //     .getAll()
-  //     .then(response => {
-  //       console.log("Fetched persons:", response.data);
-  //       if (Array.isArray(response.data)) {
-  //         setPersons(response.data);
-  //       } else {
-  //         console.error("Expected an array but got:", response.data);
-  //         setPersons([]); // Fallback to empty array
-  //       }
-  //   })
-  // }, [])
-
+      })
+      .catch(error => {
+        console.log("frontend catch");        
+        console.log(error.response.data.error)
+        setMessage({ text: error.response.data.error, type: "error" })
+      })
+  }, [newName, newNumber])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -112,8 +104,18 @@ const App = () => {
           setType('green')
           setTimeout (() => {
             setMessage(null)
-          }, 3000) 
-      })
+          }, 5000)         
+        })
+        .catch(error => {
+          console.log("frontend catch");
+          console.log("Full error:", error);
+          if (error.response && error.response.data) {
+            console.log("Error response data.error:", error.response.data.error);
+            setMessage(error.response.data.error)
+            setType('error')
+          }
+          setTimeout(() => setMessage(null), 5000);
+        });
     }
   }
 
