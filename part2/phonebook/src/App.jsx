@@ -33,9 +33,24 @@ const App = () => {
     phoneService
       .getAll()
       .then(response => {
+        console.log("Fetched persons:", response.data);
         setPersons(response.data)
     })
   }, [])
+
+  // useEffect(() => {
+  //   phoneService
+  //     .getAll()
+  //     .then(response => {
+  //       console.log("Fetched persons:", response.data);
+  //       if (Array.isArray(response.data)) {
+  //         setPersons(response.data);
+  //       } else {
+  //         console.error("Expected an array but got:", response.data);
+  //         setPersons([]); // Fallback to empty array
+  //       }
+  //   })
+  // }, [])
 
 
   const addPerson = (event) => {
