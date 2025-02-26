@@ -45,6 +45,11 @@ const App = () => {
       })
   }, [newName, newNumber])
 
+  const validatePhoneNumber = (phoneNumber) => {
+    const regex = /^\d{2,3}-\d{5,}$/;
+    return regex.test(phoneNumber);
+  };
+
   const addPerson = (event) => {
     event.preventDefault()
 
@@ -53,6 +58,16 @@ const App = () => {
     if (existingPerson){
       if (existingPerson.number !== newNumber){
         if(window.confirm(`${newName} is already added to phonebook, replace old number with a new one?`)){
+
+          if (!validatePhoneNumber(newNumber)) {
+            setMessage(`Person validation failed: ${newNumber} is not a valid phone number!`);
+            setType('error');
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000); // Clear the message after 5 seconds
+            return; 
+          }
+
           const updatedPerson = { ...existingPerson, number: newNumber }
           phoneService 
             .update(existingPerson.id, updatedPerson)
@@ -71,6 +86,7 @@ const App = () => {
               }, 3000)
             })
             .catch(error => {
+              console.log("frontend catch");
               console.error('Error updating person:', error);
               setMessage(`Information of ${existingPerson.name} has already been removed from server`)
               setType('error')
