@@ -60,7 +60,7 @@ const App = () => {
         if(window.confirm(`${newName} is already added to phonebook, replace old number with a new one?`)){
 
           if (!validatePhoneNumber(newNumber)) {
-            setMessage(`Person validation failed: ${newNumber} is not a valid phone number!`);
+            setMessage(`Person validation failed: ${newNumber} `);
             setType('error');
             setTimeout(() => {
               setMessage(null);

@@ -1,5 +1,6 @@
 import axios from 'axios'
 // const baseUrl = 'http://localhost:3001/persons'
+// const baseUrl = import.meta.env.VITE_API_URL ||   'https://finlandmoocfullstackpart3.onrender.com/api/persons' // this because they where uploaded as same service on render
 const baseUrl = 'https://finlandmoocfullstackpart3.onrender.com/api/persons' // this because they where uploaded as same service on render
 
 
