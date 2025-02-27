@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 //
 import { useState, useEffect } from 'react'
 // import axios from 'axios'
@@ -191,53 +190,33 @@ const App = () => {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-dark">
-      <div className="card bg-dark text-light p-5 rounded shadow-lg" style={{ width: '100%', maxWidth: '600px' }}>
-        
-        {/* Message Section */}
-        <Message message={message} type={type} />
-        
-        <h2 className="text-center text-primary mb-4">Phonebook</h2>
-  
-        {/* Filter */}
-        <Filter 
-          newFilter={newFilter} 
-          handleFilterChange={handleFilterChange} 
-          addFilter={addFilter} 
-        />
-    
-        <h3 className="mt-4 text-light">Add a new</h3>
-        
-        {/* Person Form */}
-        <PersonForm
-          addPerson={addPerson}
-          newName={newName}
-          newNumber={newNumber}
-          handleNameChange={handleNameChange}
-          handlePhoneChange={handlePhoneChange}
-        />
-    
-        <h3 className="mt-4 text-light">Numbers</h3>
-        
-        {/* List of Numbers */}
-        <Numbers
-          deleteBtn={deleteBtn}
-          showAllBtn={showAllBtn}
-          peopleToShow={peopleToShow}
-        />
-  
-        {/* Buttons Styling */}
-        <div className="text-center mt-4">
-          <button 
-            className="btn btn-primary w-100 mt-2"
-            onClick={showAllBtn}
-          >
-            Show All
-          </button>
-        </div>
-      </div>
+    <div>
+      <Message message={message} type={type} />
+      <h2>Phonebook</h2>
+      <Filter 
+        newFilter={newFilter} 
+        handleFilterChange={handleFilterChange} 
+        addFilter={addFilter} 
+      />
+
+      <h2>add a new</h2>
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName}
+        newNumber={newNumber}
+        handleNameChange={handleNameChange}
+        handlePhoneChange={handlePhoneChange}
+      />
+
+
+      <h2>Numbers</h2>
+      <Numbers
+        deleteBtn={deleteBtn}
+        showAllBtn={showAllBtn}
+        peopleToShow={peopleToShow}
+      />
     </div>
-  );
+  )
 }
 
 export default App

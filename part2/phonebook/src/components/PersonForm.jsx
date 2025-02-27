@@ -1,23 +1,29 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const PersonForm = ({ addPerson, newName, newNumber, handleNameChange, handlePhoneChange  }) => {
-  return(
+  return (
     <form onSubmit={addPerson}>
-      <div>
-        name: 
+      <div className="form-group">
+        <label htmlFor="nameInput" className="text-light">Name:</label>
         <input
+          id="nameInput"
+          type="text"
+          className="form-control bg-dark text-light border-light"
           value={newName}
           onChange={handleNameChange}
         />
       </div>
-      <div>
-        number: 
-        <input 
+      <div className="form-group">
+        <label htmlFor="phoneInput" className="text-light">Number:</label>
+        <input
+          id="phoneInput"
+          type="text"
+          className="form-control bg-dark text-light border-light"
           value={newNumber}
           onChange={handlePhoneChange}
         />
       </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
+      <button type="submit" className="btn btn-success w-100 mt-3">Add</button>
     </form>
   )
 }
