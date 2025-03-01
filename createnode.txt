@@ -1,0 +1,193 @@
+npm init
+
+The start npm script works because we defined it in the package.json file:
+
+{
+  // ...
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  // ...
+}
+**************************
+
+index.js file as follows:
+
+const http = require('http')
+
+const app = http.createServer((request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/plain' })
+  response.end('Hello World')
+})
+
+const PORT = 3001
+app.listen(PORT)
+console.log(`Server running on port ${PORT}`)
+
+
+*********************
+npm install express
+
+we can install all up-to-date dependencies of the project defined in package.json by running this next command in the project's root directory:
+npm install
+
+nodemon will watch the files in the directory in which nodemon was started, and if any files change, nodemon will automatically restart your node application.
+npm install --save-dev nodemon
+
+We can start our application with nodemon like this:
+node_modules/.bin/nodemon index.js
+
+The command is long and quite unpleasant, so let's define a dedicated npm script for it in the package.json file:
+{
+  // ..
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  // ..
+}
+We can now start the server in development mode with the command:
+npm run dev
+
+to use morgan logger
+npm install morgan
+
+const morgan = require('morgan')
+app.use(morgan('dev'))
+
+******
+
+We can allow requests from other origins by using Node's cors middleware.
+In your backend repository, install cors with the command
+npm install cors
+
+
+*****
+fly auth login
+
+Initializing an app happens by running the following command in the root directory of the app
+
+
+Fly.io creates a file fly.toml
+[build]
+
+[env]
+  PORT = "3000" # add this
+
+[http_service]
+  internal_port = 3000 # ensure that this is same as PORT
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+
+fly launch --no-deploy
+
+****
+render
+****
+front:
+  npm run build
+****
+to create static render for dist, on the server 
+  app.use(express.static('dist'))
+
+
+
+********************
+Let's install ESlint as a development dependency to the notes backend project with the command:
+  npm install eslint @eslint/js --save-dev
+After this we can initialize a default ESlint configuration with the command:
+  npx eslint --init
+Install a plugin that defines a set of code style-related rules:
+  npm install --save-dev @stylistic/eslint-plugin-js
+eslint.config.mjs (with all additions)
+    import globals from "globals";
+    import js from '@eslint/js'
+    import stylisticJs from '@stylistic/eslint-plugin-js'
+    /** @type {import('eslint').Linter.Config[]} */
+    export default [
+      js.configs.recommended,
+      {
+        ignores: ["dist/**", "node_modules/**", "build/**"],
+      },
+      {    
+        // ignores: ["dist/**"],
+        // ignores: ["dist/**", "node_modules/**"],
+        // ignores: ["**/dist/**", "node_modules/**", "dist/assets/index-CB1-m9sl.js"],
+        files: ["**/*.js"],
+        languageOptions: {
+          sourceType: "commonjs",
+          globals: {
+            ...globals.node,
+          },
+          ecmaVersion: "latest",
+        },
+        plugins: {
+          '@stylistic/js': stylisticJs
+        },
+        rules: {
+          'eqeqeq': 'error',
+          'no-trailing-spaces': 'error',
+          'object-curly-spacing': [
+            'error', 'always'
+          ],
+          'arrow-spacing': [
+            'error', { 'before': true, 'after': true },
+          ],
+          'no-console': 'off',
+
+          '@stylistic/js/indent': [
+            'error',
+            2
+          ],
+          '@stylistic/js/linebreak-style': [
+            'error',
+            'unix'
+          ],
+          '@stylistic/js/quotes': [
+            'error',
+            'single'
+          ],
+          '@stylistic/js/semi': [
+            'error',
+            'never'
+          ],
+        },
+      },
+    ]
+
+Inspecting and validating a file like index.js can be done with the following command:
+  npx eslint index.js
+It is recommended to create a separate npm script for linting:
+  {
+    // ...
+    "scripts": {
+      "start": "node index.js",
+      "dev": "node --watch index.js",
+      // ...
+      "lint": "eslint ."
+    },
+    // ...
+  }
+Now the  command will check every file in the project.
+  npm run lint
+adding an object with the ignores property that specifies an array of directories and files we want to ignore.
+  export default [
+    // ...
+    { 
+      ignores: ["dist/**"],
+    },
+    //...
+  ]
+(added above)
+
+
+apo gpt me ayto aytomath diorthosh
+  npx eslint . --ignore-pattern "dist/**"
+
+
