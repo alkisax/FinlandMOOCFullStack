@@ -27,32 +27,32 @@ console.log(`Server running on port ${PORT}`)
 
 
 *********************
-npm install express
+  npm install express
 
 we can install all up-to-date dependencies of the project defined in package.json by running this next command in the project's root directory:
-npm install
+  npm install
 
 nodemon will watch the files in the directory in which nodemon was started, and if any files change, nodemon will automatically restart your node application.
-npm install --save-dev nodemon
+  npm install --save-dev nodemon
 
 We can start our application with nodemon like this:
 node_modules/.bin/nodemon index.js
 
 The command is long and quite unpleasant, so let's define a dedicated npm script for it in the package.json file:
-{
-  // ..
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  // ..
-}
+  {
+    // ..
+    "scripts": {
+      "start": "node index.js",
+      "dev": "nodemon index.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    // ..
+  }
 We can now start the server in development mode with the command:
-npm run dev
+  npm run dev
 
 to use morgan logger
-npm install morgan
+  npm install morgan
 
 const morgan = require('morgan')
 app.use(morgan('dev'))
@@ -61,7 +61,7 @@ app.use(morgan('dev'))
 
 We can allow requests from other origins by using Node's cors middleware.
 In your backend repository, install cors with the command
-npm install cors
+  npm install cors
 
 
 *****
