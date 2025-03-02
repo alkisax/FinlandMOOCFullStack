@@ -1,0 +1,12 @@
+Separation of Concerns
+  Moved route handlers to controllers/blogs.js
+  Moved database schema to models/blog.js
+  Created a utils/logger.js for logging
+  Created utils/middleware.js for error handling
+Moved configuration values to utils/config.js
+Environment Variables
+  Used .env via dotenv in config.js, making it easy to change configurations without modifying code.
+Middleware Handling
+  requestLogger, unknownEndpoint, and errorHandler are in middleware.js, improving code readability.
+Improved Mongoose Schema
+Implemented .set('toJSON', {...}) to remove _id and __v, which makes the API responses cleaner.
