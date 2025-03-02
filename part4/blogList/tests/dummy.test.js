@@ -16,6 +16,34 @@ const blogs = [
     "url": "https://example2.com",
     "likes": 6,
     "id": "67c43e35d6f18f0154eb45c1"
+  },
+  {
+    "title": "Third blog",
+    "author": "John Doe",
+    "url": "https://example3.com",
+    "likes": 3,
+    "id": "67c43e35d6f18f0154eb45c2"
+  },
+  {
+    "title": "Third blog second edition",
+    "author": "John Doe",
+    "url": "https://example32.com",
+    "likes": 1,
+    "id": "67c43e35d6f18f0154eb45d2"
+  },
+  {
+    "title": "Fourth blog",
+    "author": "Johan Doe",
+    "url": "https://example4.com",
+    "likes": 7,
+    "id": "67c43e35d6f18f0154eb45c3"
+  },
+  {
+    "title": "Fifth blog",
+    "author": "Alice Smith",
+    "url": "https://example5.com",
+    "likes": 8,
+    "id": "67c43e35d6f18f0154eb45c4"
   }
 ]
 
@@ -27,9 +55,9 @@ test('dummy returns one', () => {
 })
 
 describe ('totalLikes', () => {
-  test('total likes is 11', ()  => {
+  test('total likes is 30', ()  => {
     const result = listHelper.totalLikes(blogs)
-    assert.strictEqual(result, 11)
+    assert.strictEqual(result, 30)
   })
   test('total likes is 0 for an empty list', () => {
     const result = listHelper.totalLikes([]);
@@ -43,12 +71,12 @@ describe ('totalLikes', () => {
 })
 
 describe ('maxLikes', () => {
-  test('max likes is 6', () => {
+  test('max likes is 8', () => {
     const result = listHelper.favoriteBlog(blogs)
     assert.deepStrictEqual(result, [{
-      "title": "My second blog",
-      "author": "Johan Doe",
-      "likes": 6
+      "title": "Fifth blog",
+      "author": "Alice Smith",
+      "likes": 8
     }])
   })
 
@@ -66,6 +94,19 @@ describe ('maxLikes', () => {
       "likes": 5
     }])
   })
+})
 
+describe('maxBlogs', () => {
+  test('john doe wrote 3 blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+    assert.deepStrictEqual(result, {
+      author: "John Doe",
+      blogs: 3
+    })
+  })
 
+  test('no blogs available (empty list)', () => {
+    const result = listHelper.mostBlogs([])
+    assert.deepStrictEqual(result, undefined)
+  })
 })
