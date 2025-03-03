@@ -70,7 +70,7 @@ describe ('totalLikes', () => {
   })
 })
 
-describe ('maxLikes', () => {
+describe ('mostBlogs', () => {
   test('max likes is 8', () => {
     const result = listHelper.favoriteBlog(blogs)
     assert.deepStrictEqual(result, [{
@@ -107,6 +107,21 @@ describe('maxBlogs', () => {
 
   test('no blogs available (empty list)', () => {
     const result = listHelper.mostBlogs([])
+    assert.deepStrictEqual(result, undefined)
+  })
+})
+
+describe('maxLikes', () => {
+  test('Johan Doe has most likes (13)', () => {
+    const result = listHelper.mostLikes(blogs)
+    assert.deepStrictEqual(result, {
+      author: "Johan Doe",
+      likes: 13
+    })
+  })
+
+  test('no likes available (empty list)', () => {
+    const result = listHelper.mostLikes([])
     assert.deepStrictEqual(result, undefined)
   })
 })
