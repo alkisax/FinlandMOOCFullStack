@@ -72,9 +72,50 @@ const mostBlogs = (blogs) => {
     return topAuth[0]
 }
 
+const mostLikes = (blogs) => {
+  // create a list of object with authors/likes
+  const auth_blog = []
+  blogs.forEach(blog => {
+    let found = false
+    auth_blog.forEach(entry => {
+      if (entry.author === blog.author){
+        entry.likes += blog.likes
+        found = true
+      }
+    })
+    if (!found) {
+      auth_blog.push({
+        author: blog.author,
+        likes: blog.likes
+      })
+    }
+  })
+
+  //create a list with the top author (or more if same no)
+  let max = -Infinity
+  const topAuth = []
+    // part 1 find higher no of blogs
+    auth_blog.forEach(auth => {
+      if (auth.likes >= max){
+        max = auth.likes
+      }
+    })
+    //part 2 add blogs with max likes to arr
+    auth_blog.forEach(auth => {
+      if (auth.likes === max) {
+        topAuth.push({
+          author: auth.author,
+          likes: auth.likes
+        })
+      }
+    })
+    return topAuth[0]
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
