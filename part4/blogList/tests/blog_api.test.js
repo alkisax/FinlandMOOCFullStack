@@ -30,10 +30,6 @@ test('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-after(async () => {
-  await mongoose.connection.close()
-})
-
 test('all blogs are returned', async () => {
   const response = await api.get('/api/blogs')
   
@@ -74,6 +70,30 @@ test('a valid blog can be added ', async () => {
 
   const titles = blogsAtEnd.map(n => n.title)
   assert(titles.includes('My third test'))
+})
+
+test ('verify that if the title or url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request', async () => {
+  const newBlogAuth = {
+    "author": "Johan tester",
+    "url": "https://example3.com",
+    "likes": 1
+  }
+  const newBlogUrl = {
+    "title": "My third test",
+    "author": "Johan tester",
+    "likes": 1
+  }
+  const response1 = await api
+  .post('/api/blogs')
+  .send(newBlogAuth)
+  .expect(400)
+  assert.strictEqual(response1.body.error, 'Bad Request')
+
+  const response2 = await api
+  .post('/api/blogs')
+  .send(newBlogUrl)
+  .expect(400)
+  assert.strictEqual(response2.body.error, 'Bad Request')
 })
 
 test ('verifies that if the likes property is missing from the request, it will default to the value 0', async () => {

@@ -8,6 +8,9 @@ blogRouter.get('/', async (req, res) => {
 
 blogRouter.post('/', async (req, res) => {
   const blog = new Blog(req.body)
+    if (!blog.title || !blog.url) {
+      return res.status(400).json({ error: 'Bad Request' })
+    }
     if (!blog.likes) {
       blog.likes = 0
     }
