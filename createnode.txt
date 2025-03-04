@@ -190,4 +190,37 @@ adding an object with the ignores property that specifies an array of directorie
 apo gpt me ayto aytomath diorthosh
   npx eslint . --ignore-pattern "dist/**"
 
+***4b***
+There is a slight issue in the way that we have specified the mode of the application in our scripts: it will not work on Windows. We can correct this by installing the cross-env package as a development dependency with the command:
+  npm install --save-dev cross-env
 
+NB: If you are deploying this application to Fly.io/Render, keep in mind that if cross-env is saved as a development dependency, it would cause an application error on your web server. To fix this, change cross-env to a production dependency by running this in the command line:
+  npm install cross-env
+as a development dependency:
+  npm install --save-dev supertest
+One starts to wonder if it would be possible to refactor the code to eliminate the catch from the methods?The express-async-errors library has a solution for this.
+  npm install express-async-errors
+
+******* sumary of installs ********
+React & Vite
+  npm create vite@latest testTarot -- --template react
+  npm install
+Backend Dependencies
+  npm install express
+  npm install cors
+  npm install morgan
+  npm install express-async-errors
+JSON Server
+  npm install json-server --save-dev
+Axios (for HTTP requests)
+  npm install axios
+Nodemon (for auto-restart in development)
+  npm install --save-dev nodemon
+ESLint (for linting)
+  npm install eslint @eslint/js --save-dev
+  npm install --save-dev @stylistic/eslint-plugin-js
+Supertest (for testing API endpoints)
+  npm install --save-dev supertest
+Cross-Env (to fix environment variable issues)
+  npm install --save-dev cross-env
+  npm install cross-env
