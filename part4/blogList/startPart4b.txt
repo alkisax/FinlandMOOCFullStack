@@ -1,0 +1,280 @@
+{
+  "name": "bloglist",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.11.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
+
+PORT=3003
+MONGODB_URI="mongodb+srv://alkisax:2102011895@cluster0.8ioq6.mongodb.net/blogApp?retryWrites=true&w=majority&appName=Cluster0"
+
+const app = require('./app')
+const config = require('./utils/config')
+const logger = require('./utils/logger')
+
+app.listen(config.PORT, () => {
+  logger.info(server running on port ${config.PORT})
+})
+
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const mongoose = require('mongoose')
+const blogRouter  = require('./controllers/blogs')
+const middleware = require('./utils/middleware')
+const logger = require('./utils/logger')
+const config = require('./utils/config')
+app.use(cors())
+app.use(express.static('dist'))
+app.use(express.json())
+app.use('/api/blogs', blogRouter)
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
+
+mongoose.set('strictQuery', false)
+logger.info('Connecting to ', config.MONGODB_URI)
+mongoose.connect(config.MONGODB_URI)
+  .then(() => {
+    logger.info('connected to MongoDB')
+  })
+  .catch((error) => {
+    logger.error('error connecting to MongoDB:', error.message)
+  })
+
+module.exports = app
+
+const mongoose = require('mongoose')
+const blogSchema = new mongoose.Schema({
+  title: String,
+  author: String,
+  url: String,
+  likes: Number
+})
+
+blogSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString() // Convert _id (ObjectId) to a string and store it in 'id'
+    delete returnedObject._id // Remove the original _id field
+    delete returnedObject.__v // Remove the __v field (used for versioning by Mongoose)
+  }
+})
+
+module.exports = mongoose.model('Blog', blogSchema)
+
+const blogRouter = require('express').Router()
+const Blog = require('../models/blog')
+
+blogRouter.get('/', (req, res) => {
+  Blog
+    .find({})
+    .then(blogs => {
+      res.json(blogs)
+    })
+})
+
+blogRouter.post('/', (req, res) => {
+  const blog = new Blog(req.body)
+
+  blog
+    .save()
+    .then(result => {
+      res.status(201).json(result)
+    })
+})
+
+module.exports = blogRouter
+
+require('dotenv').config()
+
+const PORT = process.env.PORT
+const MONGODB_URI = process.env.MONGODB_URI
+
+module.exports = {
+  MONGODB_URI,
+  PORT
+}
+
+const blog = require('../models/blog')
+
+const dummy = (blogs) => {
+  return 1
+}
+
+const totalLikes = (blogs) => {
+  let sum = 0
+  likes = blogs.reduce((sum, blog) => sum + blog.likes, 0)
+  return likes
+}
+
+const favoriteBlog = (blogs) => {
+  let max = -Infinity
+  const topBlog = []
+  // part 1 find higher likes
+  blogs.forEach(blog => {
+    if (blog.likes >= max){
+      max = blog.likes
+    }
+  })
+  //part 2 add blogs with max likes to arr
+  blogs.forEach(blog => {
+    if (blog.likes === max) {
+      topBlog.push({
+        title: blog.title,
+        author: blog.author,
+        likes: blog.likes
+      })
+    }
+  })
+  return topBlog
+}
+
+const mostBlogs = (blogs) => {
+  // create a list of object with authors/blogs
+  const auth_blog = []
+  blogs.forEach(blog => {
+    let found = false
+    auth_blog.forEach(entry => {
+      if (entry.author === blog.author){
+        entry.blogs += 1
+        found = true
+      }
+    })
+    if (!found) {
+      auth_blog.push({
+        author: blog.author,
+        blogs: 1
+      })
+    }
+  })
+
+  //create a list with the top author (or more if same no)
+  let max = -Infinity
+  const topAuth = []
+    // part 1 find higher no of blogs
+    auth_blog.forEach(auth => {
+      if (auth.blogs >= max){
+        max = auth.blogs
+      }
+    })
+    //part 2 add blogs with max likes to arr
+    auth_blog.forEach(auth => {
+      if (auth.blogs === max) {
+        topAuth.push({
+          author: auth.author,
+          blogs: auth.blogs
+        })
+      }
+    })
+    return topAuth[0]
+}
+
+const mostLikes = (blogs) => {
+  // create a list of object with authors/likes
+  const auth_blog = []
+  blogs.forEach(blog => {
+    let found = false
+    auth_blog.forEach(entry => {
+      if (entry.author === blog.author){
+        entry.likes += blog.likes
+        found = true
+      }
+    })
+    if (!found) {
+      auth_blog.push({
+        author: blog.author,
+        likes: blog.likes
+      })
+    }
+  })
+
+  //create a list with the top author (or more if same no)
+  let max = -Infinity
+  const topAuth = []
+    // part 1 find higher no of blogs
+    auth_blog.forEach(auth => {
+      if (auth.likes >= max){
+        max = auth.likes
+      }
+    })
+    //part 2 add blogs with max likes to arr
+    auth_blog.forEach(auth => {
+      if (auth.likes === max) {
+        topAuth.push({
+          author: auth.author,
+          likes: auth.likes
+        })
+      }
+    })
+    return topAuth[0]
+}
+
+module.exports = {
+  dummy,
+  totalLikes,
+  favoriteBlog,
+  mostBlogs,
+  mostLikes
+}
+
+const info = (...params) => {
+  console.log(...params)
+}
+
+const error = (...params) => {
+  console.error(...params)
+}
+
+module.exports = {
+  info, error
+}
+
+const { response } = require('express')
+const logger = require('./logger')
+
+const requestLogger = (request, response, next) => {
+  logger.info('Method:', request.method)
+  logger.info('Path:  ', request.path)
+  logger.info('Body:  ', request.body)
+  logger.info('---')
+  next()
+}
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+const errorHandler = (error, request, response, next) => {
+  logger.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+
+module.exports = {
+  requestLogger,
+  unknownEndpoint,
+  errorHandler
+}
