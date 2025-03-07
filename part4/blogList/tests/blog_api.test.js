@@ -1,4 +1,4 @@
-const { test, after, beforeEach  } = require('node:test')
+const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -22,6 +22,35 @@ beforeEach(async () => {
   // await blogObject.save()
 })
 
+describe ('testing delete update of a specific blog by id', () => {
+  test ('deletes by id', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
+  })
+
+  test ('updates blog likes', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    let changedBlog = blogsAtStart[0]
+    const startingLikes = changedBlog.likes
+    changedBlog.likes += 1
+
+    await api
+      .put(`/api/blogs/${changedBlog.id}`)
+      .send(changedBlog)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    const updatedBlog = blogsAtEnd.find(blog => blog.id === changedBlog.id)
+
+    assert.strictEqual(startingLikes + 1, updatedBlog.likes)
+  })
+})
 
 test('blogs are returned as json', async () => {
   await api
