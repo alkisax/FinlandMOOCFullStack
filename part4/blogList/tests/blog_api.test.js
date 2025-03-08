@@ -197,6 +197,75 @@ describe('when there is initially one user in db', () => {
 
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
   })
+
+  test('creation fails with proper statuscode and message if username less than 3 chars', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const smallUsername = {
+      username: 'ro',
+      name: 'Superuser',
+      password: 'salainen',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(smallUsername)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    console.log(result.body.error)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert(result.body.error.includes('username must be at least 3 characters long'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if pass less than 3 chars', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const smallPass = {
+      username: 'root2',
+      name: 'Superuser',
+      password: 'sa',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(smallPass)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    console.log(result.body.error)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert(result.body.error.includes('password must be longer than 3 chars'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if no pass', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const noPass = {
+      username: 'root3',
+      name: 'Superuser',
+      password: '',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(noPass)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    console.log(result.body.error)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert(result.body.error.includes('username and password are required'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
 })
 
 after(async () => {
