@@ -3,7 +3,7 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({}).populate('blogs', { content: 1, important: 1 }) //populate
+  const users = await User.find({}).populate('blogs') //populate
   response.json(users)
 })
 
@@ -17,12 +17,10 @@ usersRouter.post('/', async (request, response) => {
     return response.status(400).json({ error: 'expected `username` to be unique' })
   }
 
-  // Ensure username and password are provided
   if (!username || !password) {
     return response.status(400).json({ error: 'username and password are required' })
   }
 
-  // Check username length
   if (username.length < 3) {
     return response.status(400).json({ error: 'username must be at least 3 characters long' })
   }
