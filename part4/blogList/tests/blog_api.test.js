@@ -322,6 +322,24 @@ describe('when there is initially one user in db', () => {
   })
 })
 
+test('adding a blog fails with 401 Unauthorized if token is not provided', async () => {
+  const newBlog = {
+    title: "No Token Blog",
+    author: "No Token Author",
+    url: "http://notoken.example.com",
+    likes: 0
+  };
+
+  const result = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    // Note: We do not set the Authorization header here.
+    .expect(401)
+    .expect('Content-Type', /application\/json/);
+
+  assert.strictEqual(result.body.error, 'token missing');
+});
+
 after(async () => {
   await mongoose.connection.close()
 })
