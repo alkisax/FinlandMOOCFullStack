@@ -3,12 +3,16 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
+import NewBlogForm from './components/NewBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -60,6 +64,36 @@ const App = () => {
     setBlogs([]) 
   }
 
+  const handleNewBlog = async (event) => {
+    event.preventDefault()
+    console.log('Form submitted')
+
+    try {
+      const newBlog = {
+        title: title,
+        author: author,
+        url: url
+      }
+    
+      const createBlog = await blogService.create(newBlog)
+      setBlogs(blogs.concat(createBlog))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      console.log("createlog:", createBlog);
+      
+
+    } catch (error){
+      console.log("error:", error)
+    }
+  }
+
+  // const handleNewBlog = (event) => {
+  //   event.preventDefault()
+  //   console.log('Form submitted')
+  // }
+  
+
   return (
     <div>
 
@@ -73,16 +107,26 @@ const App = () => {
       {user !== null && (
         <div>
           <h2>blogs</h2>
-          <span>
-            <p>{user.name} logged in</p>
-            <button onClick={handleLogout}>logout</button>
-          </span>
+          <p>{user.name} logged in</p>
+          <button onClick={handleLogout}>logout</button>
           <br />
-        </div>
-      )}
+          <br />
 
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+          )}
+
+          <br />
+          <NewBlogForm
+            handleNewBlog={handleNewBlog}
+            title={title}
+            setTitle={setTitle}
+            author={author}
+            setAuthor={setAuthor}
+            url={url}
+            setUrl={setUrl}
+          />
+        </div>        
       )}
     </div>
   )
