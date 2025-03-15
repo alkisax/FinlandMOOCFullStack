@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +14,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState(null)
+  const [notStatus, setNotStatus] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -49,11 +52,22 @@ const App = () => {
       setUsername('')
       setPassword('')
 
+      setMessage(`User ${user.username} loged in`)
+      setNotStatus("green")
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+
       // Fetch blogs after logging in
       const blogs = await blogService.getAll()
       setBlogs(blogs)
     } catch (error) {
       console.error("Login failed:", error)
+      setMessage("Wrong username or password")
+      setNotStatus("red")
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
   }
 
@@ -62,6 +76,12 @@ const App = () => {
     window.localStorage.clear()
     setUser(null)
     setBlogs([]) 
+
+    setMessage("User loged out")
+    setNotStatus("green")
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   const handleNewBlog = async (event) => {
@@ -74,6 +94,12 @@ const App = () => {
         author: author,
         url: url
       }
+      
+      setMessage(`a new blog ${newBlog.title} created by ${newBlog.author}`)
+      setNotStatus("green")
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     
       const createBlog = await blogService.create(newBlog)
       setBlogs(blogs.concat(createBlog))
@@ -96,6 +122,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message} notStatus={notStatus} />
 
       {user === null && <LoginForm 
         handleLogin={handleLogin} 
