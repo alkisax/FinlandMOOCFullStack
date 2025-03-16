@@ -12,9 +12,9 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  // const [title, setTitle] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [notStatus, setNotStatus] = useState('')
 
@@ -87,36 +87,36 @@ const App = () => {
     }, 5000)
   }
 
-  const handleNewBlog = async (event) => {
-    event.preventDefault()
-    console.log('Form submitted')
+  // const handleNewBlog = async (event) => {
+  //   event.preventDefault()
+  //   console.log('Form submitted')
 
-    try {
-      const newBlog = {
-        title: title,
-        author: author,
-        url: url
-      }
+  //   try {
+  //     const newBlog = {
+  //       title: title,
+  //       author: author,
+  //       url: url
+  //     }
       
-      setMessage(`a new blog ${newBlog.title} created by ${newBlog.author}`)
-      setNotStatus("green")
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+  //     setMessage(`a new blog ${newBlog.title} created by ${newBlog.author}`)
+  //     setNotStatus("green")
+  //     setTimeout(() => {
+  //       setMessage(null)
+  //     }, 5000)
     
-      const createBlog = await blogService.create(newBlog)
-      setBlogs(blogs.concat(createBlog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      console.log("createlog:", createBlog);
+  //     const createBlog = await blogService.create(newBlog)
+  //     setBlogs(blogs.concat(createBlog))
+  //     setTitle('')
+  //     setAuthor('')
+  //     setUrl('')
+  //     console.log("createlog:", createBlog);
 
-      blogFormRef.current.toggleVisibility()      
+  //     blogFormRef.current.toggleVisibility()      
 
-    } catch (error){
-      console.log("error:", error)
-    }
-  }
+  //   } catch (error){
+  //     console.log("error:", error)
+  //   }
+  // }
 
   // const handleNewBlog = (event) => {
   //   event.preventDefault()
@@ -129,12 +129,13 @@ const App = () => {
       <Notification message={message} notStatus={notStatus} />
 
       {user === null && <LoginForm 
-        handleLogin={handleLogin} 
-        username={username} 
-        password={password} 
-        setUsername={setUsername} 
-        setPassword={setPassword}
-      />}
+          handleLogin={handleLogin} 
+          username={username} 
+          password={password} 
+          setUsername={setUsername} 
+          setPassword={setPassword}
+        />
+      }
       {user !== null && (
         <div>
           <h2>blogs</h2>
@@ -150,13 +151,18 @@ const App = () => {
           <br />
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <NewBlogForm
-              handleNewBlog={handleNewBlog}
-              title={title}
-              setTitle={setTitle}
-              author={author}
-              setAuthor={setAuthor}
-              url={url}
-              setUrl={setUrl}
+              setMessage={setMessage}
+              setNotStatus={setNotStatus}
+              setBlogs={setBlogs}
+              blogs={blogs}
+              blogFormRef={blogFormRef}
+              // handleNewBlog={handleNewBlog}
+              // title={title}
+              // setTitle={setTitle}
+              // author={author}
+              // setAuthor={setAuthor}
+              // url={url}
+              // setUrl={setUrl}
             />
           </Togglable>
 
