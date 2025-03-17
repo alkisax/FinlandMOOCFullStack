@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, blogs, setBlogs, user }) => {
   const [viewMore, setViewMore] = useState(false)
+
+  console.log(user);
 
   const blogStyle = {
     paddingTop: 10,
@@ -35,6 +37,15 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     }
   }
 
+  const handleDelete = async (blog) => {
+    try {
+      await blogService.remove(blog.id)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+    } catch (error) {
+      console.error("Error while deletion:", error);
+    }
+  }
+
   return (
     <div style={blogStyle}>
       <div>
@@ -50,7 +61,12 @@ const Blog = ({ blog, blogs, setBlogs }) => {
         <div>
           <p>URL: {blog.url}</p>
           <p>likes: {blog.likes} <button onClick={() => handleLike(blog)}>Like!</button></p>
-          <p>user: {blog.user?.username || 'No user'}</p> 
+          <p>user: {blog.user?.username || 'No user'}</p>
+
+          {blog.user && user.username === blog.user.username &&
+            <button onClick={() => handleDelete(blog)}>delete</button>
+          }
+
           <button onClick={handleViewClick}>hide</button>
         </div>
       }
