@@ -4,8 +4,6 @@ import blogService from '../services/blogs'
 const Blog = ({ blog, blogs, setBlogs, user }) => {
   const [viewMore, setViewMore] = useState(false)
 
-  console.log(user);
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -38,6 +36,14 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
   }
 
   const handleDelete = async (blog) => {
+    console.log("entered delete");    
+    const result = window.confirm(`remove blog "${blog.name}" by ${blog.author}`);
+    if (!result) {
+      console.log("The user canceled the action.");
+      return; 
+    }
+    console.log("confirmation passed");
+
     try {
       await blogService.remove(blog.id)
       setBlogs(blogs.filter(b => b.id !== blog.id))
