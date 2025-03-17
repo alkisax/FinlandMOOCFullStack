@@ -120,6 +120,7 @@ const App = () => {
               setBlogs={setBlogs}
               blogs={blogs}
               blogFormRef={blogFormRef}
+              user={user}
             />
           </Togglable>
 

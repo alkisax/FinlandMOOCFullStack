@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const NewBlogForm = ({ setMessage, setBlogs, setNotStatus, blogs, blogFormRef }) => {
+const NewBlogForm = ({ setMessage, setBlogs, setNotStatus, blogs, blogFormRef, user }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -23,14 +23,22 @@ const NewBlogForm = ({ setMessage, setBlogs, setNotStatus, blogs, blogFormRef })
         setMessage(null)
       }, 5000)
     
-      const createBlog = await blogService.create(newBlog)
-      setBlogs(blogs.concat(createBlog))
+      const createdBlog = await blogService.create(newBlog)
+      // setBlogs(blogs.concat(createdBlog))
       setTitle('')
       setAuthor('')
       setUrl('')
-      console.log("createlog:", createBlog);
+      console.log("createlog:", createdBlog);
 
-      blogFormRef.current.toggleVisibility()      
+      blogFormRef.current.toggleVisibility()
+
+      const blogWithUser = {
+        ...createdBlog,
+        user: { username: user.username } 
+      };
+  
+      // Update state with the new blog
+      setBlogs(blogs.concat(blogWithUser))
 
     } catch (error){
       console.log("error:", error)
