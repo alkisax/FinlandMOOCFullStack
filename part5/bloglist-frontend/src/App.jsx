@@ -104,7 +104,10 @@ const App = () => {
           <br />
           <br />
 
-          {blogs.map(blog =>
+          {blogs
+            .slice() // Create a copy to avoid mutating the original state
+            .sort((a, b) => b.likes - a.likes)
+            .map(blog =>
             <Blog key={blog.id}
               blog={blog}
               blogs={blogs}
