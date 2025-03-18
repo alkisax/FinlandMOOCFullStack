@@ -5,7 +5,7 @@ const NoteForm = ({ addNote, newNote, handleNoteChange }) => (
       onChange={handleNoteChange}
     />
     <button type="submit">save</button>
-  </form>  
+  </form>
 )
 
 export default NoteForm

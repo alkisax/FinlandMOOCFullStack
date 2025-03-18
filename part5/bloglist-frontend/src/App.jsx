@@ -9,7 +9,7 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
@@ -20,7 +20,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const App = () => {
       blogService.setToken(user.token)
       blogService.getAll().then(blogs =>
         setBlogs( blogs )
-      )  
+      )
     }
   }, [])
 
@@ -75,7 +75,7 @@ const App = () => {
     event.preventDefault()
     window.localStorage.clear()
     setUser(null)
-    setBlogs([]) 
+    setBlogs([])
 
     setMessage("User loged out")
     setNotStatus("green")
@@ -88,13 +88,13 @@ const App = () => {
     <div>
       <Notification message={message} notStatus={notStatus} />
 
-      {user === null && <LoginForm 
-          handleLogin={handleLogin} 
-          username={username} 
-          password={password} 
-          setUsername={setUsername} 
-          setPassword={setPassword}
-        />
+      {user === null && <LoginForm
+        handleLogin={handleLogin}
+        username={username}
+        password={password}
+        setUsername={setUsername}
+        setPassword={setPassword}
+      />
       }
       {user !== null && (
         <div>
@@ -108,13 +108,13 @@ const App = () => {
             .slice() // Create a copy to avoid mutating the original state
             .sort((a, b) => b.likes - a.likes)
             .map(blog =>
-            <Blog key={blog.id}
-              blog={blog}
-              blogs={blogs}
-              setBlogs={setBlogs}
-              user={user}
-            />
-          )}
+              <Blog key={blog.id}
+                blog={blog}
+                blogs={blogs}
+                setBlogs={setBlogs}
+                user={user}
+              />
+            )}
 
           <br />
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
@@ -128,7 +128,7 @@ const App = () => {
             />
           </Togglable>
 
-        </div>        
+        </div>
       )}
     </div>
   )

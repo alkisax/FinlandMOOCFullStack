@@ -10,7 +10,7 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  backgroundColor: 'lightGrey'
+    backgroundColor: 'lightGrey'
   }
 
   const handleViewClick = () => {
@@ -31,24 +31,24 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
       // check for every blog if it matches the id of changed and if it does replace it
       setBlogs(blogs.map(b => (b.id === blog.id ? updatedBlog : b)))
     } catch (error) {
-      console.error("Error updating likes:", error);
+      console.error("Error updating likes:", error)
     }
   }
 
   const handleDelete = async (blog) => {
-    console.log("entered delete");    
-    const result = window.confirm(`remove blog "${blog.name}" by ${blog.author}`);
+    console.log("entered delete")
+    const result = window.confirm(`remove blog "${blog.title}" by ${blog.author}`)
     if (!result) {
-      console.log("The user canceled the action.");
-      return; 
+      console.log("The user canceled the action.")
+      return
     }
-    console.log("confirmation passed");
+    console.log("confirmation passed")
 
     try {
       await blogService.remove(blog.id)
       setBlogs(blogs.filter(b => b.id !== blog.id))
     } catch (error) {
-      console.error("Error while deletion:", error);
+      console.error("Error while deletion:", error)
     }
   }
 
@@ -58,11 +58,11 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
         <p>{blog.title}. by: {blog.author}</p>
       </div>
 
-      {!viewMore && 
+      {!viewMore &&
         <button onClick={handleViewClick}>view</button>
       }
 
-{/* ? needed */}
+      {/* ? needed */}
       {viewMore &&
         <div>
           <p>URL: {blog.url}</p>

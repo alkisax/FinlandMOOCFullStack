@@ -10,13 +10,13 @@ const Notification = ({ message, notStatus }) => {
     color: 'white',
     textAlign: 'center',
     backgroundColor: notStatus === 'green' ? 'green' : 'red',
-  };
+  }
 
   return (
     <div style={notificationStyle}>
       {message}
     </div>
-  );
+  )
 }
 
 export default Notification
