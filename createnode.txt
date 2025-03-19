@@ -224,3 +224,5 @@ Supertest (for testing API endpoints)
 Cross-Env (to fix environment variable issues)
   npm install --save-dev cross-env
   npm install cross-env
+The expected and required props of a component can be defined with the prop-types (front)
+  npm install prop-types
