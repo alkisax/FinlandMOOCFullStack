@@ -55,7 +55,7 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
   return (
     <div style={blogStyle}>
       <div>
-        <p>{blog.title}. by: {blog.author}</p>
+        <p id='testerTitleAuthor'>{blog.title}. by: {blog.author}</p>
       </div>
 
       {!viewMore &&
