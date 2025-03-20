@@ -84,6 +84,24 @@ const App = () => {
     }, 5000)
   }
 
+  const handleLike = async (blog) => {
+    const addedLikes = blog.likes +1
+    const updatedBlog = {
+      ...blog,
+      likes: addedLikes
+    }
+
+    try {
+      await blogService.update(blog.id, updatedBlog)
+
+      //update state
+      // check for every blog if it matches the id of changed and if it does replace it
+      setBlogs(blogs.map(b => (b.id === blog.id ? updatedBlog : b)))
+    } catch (error) {
+      console.error("Error updating likes:", error)
+    }
+  }
+
   return (
     <div>
       <Notification message={message} notStatus={notStatus} />
@@ -113,6 +131,7 @@ const App = () => {
                 blogs={blogs}
                 setBlogs={setBlogs}
                 user={user}
+                handleLike={handleLike}
               />
             )}
 

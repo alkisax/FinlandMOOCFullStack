@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, blogs, setBlogs, user }) => {
+const Blog = ({ blog, blogs, setBlogs, user, handleLike }) => {
   const [viewMore, setViewMore] = useState(false)
 
   const blogStyle = {
@@ -17,23 +17,9 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
     setViewMore(!viewMore)
   }
 
-  const handleLike = async (blog) => {
-    const addedLikes = blog.likes +1
-    const updatedBlog = {
-      ...blog,
-      likes: addedLikes
-    }
-
-    try {
-      await blogService.update(blog.id, updatedBlog)
-
-      //update state
-      // check for every blog if it matches the id of changed and if it does replace it
-      setBlogs(blogs.map(b => (b.id === blog.id ? updatedBlog : b)))
-    } catch (error) {
-      console.error("Error updating likes:", error)
-    }
-  }
+  // const handleLike = async (blog) => {
+  // ***method got lifted to the main app***
+  // }
 
   const handleDelete = async (blog) => {
     console.log("entered delete")
@@ -80,6 +66,5 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
     </div>
   )
 }
-
 
 export default Blog
