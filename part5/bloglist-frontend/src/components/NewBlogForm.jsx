@@ -1,55 +1,69 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const NewBlogForm = ({ setMessage, setBlogs, setNotStatus, blogs, blogFormRef, user }) => {
+const NewBlogForm = ({ handleNewBlog, setMessage, setNotStatus, blogs, blogFormRef, user }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handleNewBlog = async (event) => {
+  // const handleNewBlog = async (event) => {
+  //   event.preventDefault()
+  //   console.log('Form submitted')
+
+  //   try {
+  //     const newBlog = {
+  //       title: title,
+  //       author: author,
+  //       url: url
+  //     }
+
+  //     setMessage(`a new blog ${newBlog.title} created by ${newBlog.author}`)
+  //     setNotStatus("green")
+  //     setTimeout(() => {
+  //       setMessage(null)
+  //     }, 5000)
+
+  //     const createdBlog = await blogService.create(newBlog)
+  //     // setBlogs(blogs.concat(createdBlog))
+  //     setTitle('')
+  //     setAuthor('')
+  //     setUrl('')
+  //     console.log("createlog:", createdBlog)
+
+  //     blogFormRef.current.toggleVisibility()
+
+  //     const blogWithUser = {
+  //       ...createdBlog,
+  //       user: { username: user.username }
+  //     }
+
+  //     // Update state with the new blog
+  //     setBlogs(blogs.concat(blogWithUser))
+
+  //   } catch (error){
+  //     console.log("error:", error)
+  //   }
+  // }
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log('Form submitted')
 
-    try {
-      const newBlog = {
-        title: title,
-        author: author,
-        url: url
-      }
+    const newBlog = { title, author, url }
+    handleNewBlog(newBlog) // Call the parent function
 
-      setMessage(`a new blog ${newBlog.title} created by ${newBlog.author}`)
-      setNotStatus("green")
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-
-      const createdBlog = await blogService.create(newBlog)
-      // setBlogs(blogs.concat(createdBlog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      console.log("createlog:", createdBlog)
-
-      blogFormRef.current.toggleVisibility()
-
-      const blogWithUser = {
-        ...createdBlog,
-        user: { username: user.username }
-      }
-
-      // Update state with the new blog
-      setBlogs(blogs.concat(blogWithUser))
-
-    } catch (error){
-      console.log("error:", error)
-    }
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    blogFormRef.current.toggleVisibility()
   }
 
   return (
-    <form onSubmit={handleNewBlog}>
+    <form onSubmit={handleSubmit}>
       <div>
         title:
         <input
+          id="title"
+          placeholder="title"
           type="text"
           value={title}
           name="title"
@@ -60,6 +74,8 @@ const NewBlogForm = ({ setMessage, setBlogs, setNotStatus, blogs, blogFormRef, u
       <div>
         author:
         <input
+          id="author"
+          placeholder="author"
           type="text"
           value={author}
           name="author"
@@ -70,6 +86,8 @@ const NewBlogForm = ({ setMessage, setBlogs, setNotStatus, blogs, blogFormRef, u
       <div>
         url:
         <input
+          id="url"
+          placeholder="url"
           type="text"
           value={url}
           name="url"
@@ -78,10 +96,9 @@ const NewBlogForm = ({ setMessage, setBlogs, setNotStatus, blogs, blogFormRef, u
         />
       </div>
       <br />
-      <button type="submit">create</button>
+      <button id="create" type="submit">create</button>
     </form>
   )
 }
-
 
 export default NewBlogForm

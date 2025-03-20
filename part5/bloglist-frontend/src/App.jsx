@@ -102,6 +102,25 @@ const App = () => {
     }
   }
 
+  const handleNewBlog = async (newBlog) => {
+    try {
+      setMessage(`a new blog ${newBlog.title} created by ${newBlog.author}`)
+      setNotStatus("green")
+      setTimeout(() => setMessage(null), 5000)
+
+      const createdBlog = await blogService.create(newBlog)
+
+      const blogWithUser = {
+        ...createdBlog,
+        user: { username: user.username }
+      }
+
+      setBlogs(blogs.concat(blogWithUser))
+    } catch (error) {
+      console.error("Error creating blog:", error)
+    }
+  }
+
   return (
     <div>
       <Notification message={message} notStatus={notStatus} />
@@ -138,10 +157,11 @@ const App = () => {
           <br />
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <NewBlogForm
+              handleNewBlog={handleNewBlog}
               setMessage={setMessage}
               setNotStatus={setNotStatus}
-              setBlogs={setBlogs}
-              blogs={blogs}
+              // setBlogs={setBlogs}
+              // blogs={blogs}
               blogFormRef={blogFormRef}
               user={user}
             />

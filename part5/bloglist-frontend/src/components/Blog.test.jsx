@@ -4,8 +4,6 @@ import userEvent from '@testing-library/user-event'
 
 import { test, expect, beforeEach, vi } from 'vitest'
 
-import blogService from '../services/blogs'
-
 test('renders title and author but not URL or likes', () => {
   const blog = {
     title: 'test',
