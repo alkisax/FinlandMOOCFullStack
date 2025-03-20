@@ -65,8 +65,8 @@ const Blog = ({ blog, blogs, setBlogs, user }) => {
       {/* ? needed */}
       {viewMore &&
         <div>
-          <p>URL: {blog.url}</p>
-          <p>likes: {blog.likes} <button onClick={() => handleLike(blog)}>Like!</button></p>
+          <p id='testUrl'>URL: {blog.url}</p>
+          <p id='testLikes'>likes: {blog.likes} <button onClick={() => handleLike(blog)}>Like!</button></p>
           <p>user: {blog.user?.username || 'No user'}</p>
 
           {blog.user && user.username === blog.user.username &&

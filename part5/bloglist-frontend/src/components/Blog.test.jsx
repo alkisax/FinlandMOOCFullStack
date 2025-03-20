@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
+import userEvent from '@testing-library/user-event'
 
-import { test, expect, vi } from 'vitest'
+import { test, expect, beforeEach, vi } from 'vitest'
 
 test('renders title and author but not URL or likes', () => {
   const blog = {
@@ -18,5 +19,25 @@ test('renders title and author but not URL or likes', () => {
   expect(element).toHaveTextContent('test')
   expect(element).toHaveTextContent('tester')
   expect(element).not.toHaveTextContent('localhost')
-  expect(container).not.toHaveTextContent('0')
+  expect(element).not.toHaveTextContent('0')
+})
+
+test('likes and url are shown when btn pressed', async () => {
+  const blog = {
+    title: 'test',
+    author: 'tester',
+    url:'http://localhost:5173',
+    likes: 0
+  }
+
+  const { container } = render(<Blog blog={blog} />)
+
+  const user = userEvent.setup()
+  const button = screen.getByText('view')
+  await user.click(button)
+
+  const urlParagraph = container.querySelector('#testUrl')
+  const likesParagraph = container.querySelector('#testLikes')
+  expect(urlParagraph).toHaveTextContent('localhost')
+  expect(likesParagraph).toHaveTextContent('0')
 })
