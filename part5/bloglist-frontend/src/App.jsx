@@ -17,11 +17,11 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
-  }, [])
+  // useEffect(() => {
+  //   blogService.getAll().then(blogs =>
+  //     setBlogs( blogs )
+  //   )
+  // }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')

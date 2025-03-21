@@ -1,4 +1,5 @@
 node_modules
+cypress
 dist
 .eslintrc.cjs
 vite.config.js

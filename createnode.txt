@@ -201,6 +201,88 @@ as a development dependency:
 One starts to wonder if it would be possible to refactor the code to eliminate the catch from the methods?The express-async-errors library has a solution for this.
   npm install express-async-errors
 
+***5c***
+Vitest and the jsdom library simulating a web browser (for testing)
+  npm install --save-dev vitest jsdom
+another testing library that will help us render components for testing purposes
+  npm install --save-dev @testing-library/react @testing-library/jest-dom
+
+change package.json scripts
+  "test": "vitest run"
+
+  Expand the vite.config.js file as follows
+
+export default defineConfig({
+  // ...
+  test: {
+      environment: 'jsdom',
+      globals: true,
+      setupFiles: './testSetup.js', 
+    }
+  })
+
+
+Eslint complains about the keywords test and expect in the tests. The problem can be solved by installing eslint-plugin-vitest-globals:
+  npm install --save-dev eslint-plugin-vitest-globals
+and enable the plugin by editing the .eslintrc.cjs file as follows:
+
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    es2020: true,
+    "vitest-globals/env": true
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
+    'plugin:vitest-globals/recommended',
+  ],
+}
+
+Let us install a library user-event that makes simulating user input a bit easier:
+  npm install --save-dev @testing-library/user-event
+
+examples of expect.sth
+  expect(mockHandler.mock.calls).toHaveLength(1)
+  expect(element).toBeDefined()
+  expect(div).toHaveTextContent('Component testing ')
+  expect(div).toHaveStyle('display: none')
+  expect(createNote.mock.calls[0][0].content).toBe('testing a form...')
+examples of selecting element αλλα ίσως να χρειάζομαι το container = ( ... ).container
+  container.querySelector('.togglableContent')
+  container.querySelector('#note-input')
+  screen.getByText('save')
+  await screen.findByText('Does not work anymore')
+  screen.getByRole('textbox')
+  screen.getAllByRole('textbox')
+  screen.getByPlaceholderText('write note content here')
+examples of mock user
+  const user = userEvent.setup()
+  await user.click(button)
+  await user.type(input, 'testing a form...')
+
+test coverage
+  npm test -- --coverage
+
+**5e**
+  "scripts": {
+    "cypress:open": "cypress open"
+  },
+
+start with
+  npm run cypress:open
+
+We can get rid of it by installing eslint-plugin-cypress as a development dependency
+  npm install eslint-plugin-cypress --save-devcopy
+and changing the configuration in .eslintrc.cjs like so:
+    "cypress/globals": true
+      "plugins": [
+      "react", "jest", "cypress"]
+
+
 ******* sumary of installs ********
 React & Vite
   npm create vite@latest testTarot -- --template react
@@ -226,3 +308,14 @@ Cross-Env (to fix environment variable issues)
   npm install cross-env
 The expected and required props of a component can be defined with the prop-types (front)
   npm install prop-types
+
+TESTING
+Vitest and the jsdom library simulating a web browser (for testing)
+  npm install --save-dev vitest jsdom
+another testing library that will help us render components for testing purposes
+  npm install --save-dev @testing-library/react @testing-library/jest-dom
+Eslint complains about the keywords test and expect in the tests. eslint-plugin-vitest-globals:
+  npm install --save-dev eslint-plugin-vitest-globals
+Cypress
+  npm install --save-dev cypress
+  npm install eslint-plugin-cypress --save-dev
