@@ -48,7 +48,25 @@ describe('Blog app', function() {
       cy.get('#url').type('http://localhost:5173')
       cy.get('#create').click()
       cy.contains('a blog created by cypress')
-      cy.get('#logout').click()
+      // cy.get('#logout').click()
+    })
+
+    describe('and a blog exists', function () {
+      beforeEach(function () {
+        cy.contains('new blog').click()
+        cy.get('#title').type('a blog created by cypress')
+        cy.get('#author').type('cypress tester')
+        cy.get('#url').type('http://localhost:5173')
+        cy.get('#create').click()
+      })
+
+      it('it can be made not important', function () {
+        cy.contains('a blog created by cypress')
+        cy.get('#view').click()
+
+        cy.contains('a blog created by cypress')
+        cy.get('#hide').click()
+      })
     })
   })
 

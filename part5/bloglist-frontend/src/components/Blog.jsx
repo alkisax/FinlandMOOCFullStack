@@ -45,7 +45,7 @@ const Blog = ({ blog, blogs, setBlogs, user, handleLike }) => {
       </div>
 
       {!viewMore &&
-        <button onClick={handleViewClick}>view</button>
+        <button id='view' onClick={handleViewClick}>view</button>
       }
 
       {/* ? needed */}
@@ -59,7 +59,7 @@ const Blog = ({ blog, blogs, setBlogs, user, handleLike }) => {
             <button onClick={() => handleDelete(blog)}>delete</button>
           }
 
-          <button onClick={handleViewClick}>hide</button>
+          <button id='hide' onClick={handleViewClick}>hide</button>
         </div>
       }
 
