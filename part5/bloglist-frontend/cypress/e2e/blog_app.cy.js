@@ -81,17 +81,34 @@ describe('Blog app', function() {
         cy.get('#hide').click()
       })
 
-      it('user can delete the blog', function() {
+      it('only the creator can delete the blog', function() {
         cy.wait(3000)
         cy.contains('new blog').click()
-        cy.get('#title').type('delete tester')
+        cy.get('#title').type('delet tester')
         cy.get('#author').type('cypress tester')
         cy.get('#url').type('http://localhost:5173')
         cy.get('#create').click()
         cy.get('#view').click()
         cy.get('#delete').click()
         cy.contains('delete tester').should('not.exist')
+        cy.get('#logout').click()
+
+        const user2 = {
+          name: 'tester2',
+          username: 'tester2',
+          password: '123'
+        }
+        cy.request('POST', 'http://localhost:3003/api/users/', user2)
+        cy.contains('login').click()
+        cy.get('#username').type('tester2')
+        cy.get('#password').type('123')
+        cy.get('[data-testid="login-button"]').click()
+        cy.get('#view').click()
+
+        cy.contains('delete').should('not.exist')
       })
+
+
     })
 
     it('A blog can be created', function() {
