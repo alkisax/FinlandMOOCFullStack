@@ -133,8 +133,31 @@ describe('Blog app', function() {
       cy.contains('likes: 1')
       cy.get('#hide').click()
     })
+  })
 
-    // it('creates three blogs', function () {
+  describe('order of liked blogs', function () {
+    it('creates 2 blogs', function () {
+      const twoLikes = {
+        title:"two likes",
+        author:"tester",
+        url:"https://test.com",
+        likes: 2
+      }
+      const oneLikes = {
+        title:"one likes",
+        author:"tester",
+        url:"https://test.com",
+        likes: 1
+      }
+
+      cy.request('POST', 'http://localhost:3003/api/blogs/', twoLikes)
+      cy.request('POST', 'http://localhost:3003/api/blogs/', oneLikes)
+
+      cy.contains('login').click()
+      cy.get('#username').type('tester')
+      cy.get('#password').type('123')
+      cy.get('[data-testid="login-button"]').click()
+      
     //   cy.contains('new blog').click()
     //   cy.get('#title').type('first blog tester')
     //   cy.get('#author').type('cypress tester')
@@ -159,9 +182,6 @@ describe('Blog app', function() {
     //   cy.wait(500)
     //   cy.contains('likes: 1') 
     //   // cy.contains('')
-    // })
-
-
+    })
   })
-
 })
