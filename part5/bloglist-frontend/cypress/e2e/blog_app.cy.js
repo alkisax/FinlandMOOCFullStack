@@ -12,7 +12,6 @@ describe('Blog app', function() {
   })
 
   it('front page can be opened', function() {
-    // cy.wait(2000)
     cy.contains('username')
   })
 
@@ -49,6 +48,7 @@ describe('Blog app', function() {
       cy.get('#url').type('http://localhost:5173')
       cy.get('#create').click()
       cy.contains('a blog created by cypress')
+      cy.get('#logout').click()
     })
   })
 

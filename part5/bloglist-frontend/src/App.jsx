@@ -137,7 +137,7 @@ const App = () => {
         <div>
           <h2>blogs</h2>
           <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>logout</button>
+          <button id='logout' onClick={handleLogout}>logout</button>
           <br />
           <br />
 
