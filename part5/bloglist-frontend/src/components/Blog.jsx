@@ -56,7 +56,7 @@ const Blog = ({ blog, blogs, setBlogs, user, handleLike }) => {
           <p>user: {blog.user?.username || 'No user'}</p>
 
           {blog.user && user.username === blog.user.username &&
-            <button onClick={() => handleDelete(blog)}>delete</button>
+            <button id='delete' onClick={() => handleDelete(blog)}>delete</button>
           }
 
           <button id='hide' onClick={handleViewClick}>hide</button>
