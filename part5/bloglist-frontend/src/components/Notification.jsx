@@ -13,7 +13,7 @@ const Notification = ({ message, notStatus }) => {
   }
 
   return (
-    <div style={notificationStyle}>
+    <div id="notification" style={notificationStyle}>
       {message}
     </div>
   )

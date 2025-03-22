@@ -282,6 +282,13 @@ and changing the configuration in .eslintrc.cjs like so:
       "plugins": [
       "react", "jest", "cypress"]
 
+gpt ->
+Modify package.json scripts for frontend:
+1️⃣ Change dev script:
+  "scripts": {
+    "dev": "vite --host 0.0.0.0"
+  }
+
 
 ******* sumary of installs ********
 React & Vite
