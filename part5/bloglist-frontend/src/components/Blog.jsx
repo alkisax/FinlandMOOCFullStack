@@ -39,7 +39,7 @@ const Blog = ({ blog, blogs, setBlogs, user, handleLike }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div  className='blog' style={blogStyle}>
       <div>
         <p id='testerTitleAuthor'>{blog.title}. by: {blog.author}</p>
       </div>
