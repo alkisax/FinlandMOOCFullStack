@@ -7,15 +7,14 @@ import reducer from './reducer'
 const store = createStore(reducer)
 
 const App = () => {
-
+  const handleClick = (type) => {
+    store.dispatch({ type: type})
+  }
 
   return (
     <div>
-      <button 
-        onClick={() => {
-          store.dispatch({ type: 'GOOD'})
-        }}
-      >good</button> 
+      <button onClick={() => handleClick('GOOD')}>
+        good</button> 
       <button
         onClick={() => {
           store.dispatch({ type: 'OK'})
