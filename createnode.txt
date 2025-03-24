@@ -289,6 +289,8 @@ Modify package.json scripts for frontend:
     "dev": "vite --host 0.0.0.0"
   }
 
+**6a**
+npm install redux
 
 ******* sumary of installs ********
 React & Vite
@@ -315,6 +317,8 @@ Cross-Env (to fix environment variable issues)
   npm install cross-env
 The expected and required props of a component can be defined with the prop-types (front)
   npm install prop-types
+Redux state managment
+  npm install redux
 
 TESTING
 Vitest and the jsdom library simulating a web browser (for testing)

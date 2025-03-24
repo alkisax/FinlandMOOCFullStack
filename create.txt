@@ -1,6 +1,6 @@
 
 # npm 7+, extra double-dash is needed:
-npm create vite@latest testTarot  -- --template react
+npm create vite@latest counter  -- --template react
 cd introdemo
 npm install 
 The application is started as follows
