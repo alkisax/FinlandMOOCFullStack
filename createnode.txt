@@ -292,6 +292,10 @@ Modify package.json scripts for frontend:
 **6a**
 npm install redux
 
+Jest testing library for the project
+  npm install --save-dev jest @babel/preset-env @babel/preset-react eslint-plugin-jest
+
+
 ******* sumary of installs ********
 React & Vite
   npm create vite@latest testTarot -- --template react
@@ -330,3 +334,8 @@ Eslint complains about the keywords test and expect in the tests. eslint-plugin-
 Cypress
   npm install --save-dev cypress
   npm install eslint-plugin-cypress --save-dev
+Jest testing library for the project
+  npm install --save-dev jest @babel/preset-env @babel/preset-react eslint-plugin-jest
+
+deep-freeze, which can be used to ensure that the reducer has been correctly defined as an immutable function
+  npm install --save-dev deep-freeze
