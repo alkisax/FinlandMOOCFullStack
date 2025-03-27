@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { voteAnecdote } from '../store'
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(state => state.anecdotes)
@@ -18,7 +18,7 @@ const AnecdoteList = () => {
   return (
     <>
       <h2>Anecdotes</h2>
-      {filteredAnecdotes
+      {[...filteredAnecdotes]
         .slice()
         .sort((a,b) => b.votes - a.votes)
         .map(anecdote =>

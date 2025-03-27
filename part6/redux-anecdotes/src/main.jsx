@@ -1,12 +1,11 @@
 // import 'bootstrap/dist/css/bootstrap.min.css'
-import ReactDOM from 'react-dom/client'
 // import { createStore, combineReducers } from 'redux'
+// import filterReducer from './reducers/filterReducer'
+import ReactDOM from 'react-dom/client'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import App from './App'
-import anecdoteReducer from './reducers/anecdoteReducer'
-// import filterReducer from './reducers/filterReducer'
-import filterReducer from './store'
+import { anecdoteReducer, filterReducer } from './store'
 
 // const reducer = combineReducers({
 //   anecdotes: anecdoteReducer,
