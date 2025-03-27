@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useDispatch } from 'react-redux'
-import { setFilter } from '../reducers/filterReducer';
+// import { setFilter } from '../reducers/filterReducer';
+import { setFilter } from '../store';
+
 
 const AnecdoteFilter = () => {
   const dispatch = useDispatch()

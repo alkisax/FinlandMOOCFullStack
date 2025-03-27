@@ -324,6 +324,7 @@ The expected and required props of a component can be defined with the prop-type
 Redux state managment
   npm install redux
   npm install react-redux
+  npm install @reduxjs/toolkit
 
 TESTING
 Vitest and the jsdom library simulating a web browser (for testing)
