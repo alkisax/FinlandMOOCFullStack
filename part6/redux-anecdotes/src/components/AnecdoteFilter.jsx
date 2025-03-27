@@ -6,9 +6,11 @@ const AnecdoteFilter = () => {
   const dispatch = useDispatch()
 
   const handleChange = (event) => {
+    const filter = event.target.value
+    console.log(filter)
     dispatch(setFilter(event.target.value))
   }
-  
+
   const style = {
     marginBottom: 10
   }
