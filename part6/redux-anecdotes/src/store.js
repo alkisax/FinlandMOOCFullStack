@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createSlice } from '@reduxjs/toolkit'
 
 const anecdotesAtStart = [
@@ -56,7 +57,22 @@ const filterSlice = createSlice({
   }
 })
 
+const notificationSlice = createSlice({
+  name: 'notification',
+  initialState: '',
+  reducers: {
+    setNotification(state, action) {
+      return action.payload
+    },
+    clearNotification() {
+      return ''
+    }
+  }
+})
+
 export const { voteAnecdote, newAnecdote } = anecdoteSlice.actions
 export const { setFilter } = filterSlice.actions
+export const { setNotification, clearNotification } = notificationSlice.actions
+export const notificationReducer = notificationSlice.reducer
 export const anecdoteReducer = anecdoteSlice.reducer
 export const filterReducer = filterSlice.reducer
