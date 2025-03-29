@@ -325,6 +325,8 @@ Redux state managment
   npm install redux
   npm install react-redux
   npm install @reduxjs/toolkit
+Query state managment
+  npm install @tanstack/react-query
 
 TESTING
 Vitest and the jsdom library simulating a web browser (for testing)
