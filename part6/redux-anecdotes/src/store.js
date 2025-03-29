@@ -27,14 +27,20 @@ const anecdoteSlice = createSlice ({
   name: 'anecdotes',
   initialState: [],
   reducers: {
-    voteAnecdote (state, action){      
-      const id = action.payload
-      const anecdoteToChange = state.find(n => n.id === id)
-      const changedAnecdote = {
-        ...anecdoteToChange,
-        votes: anecdoteToChange.votes +1
-      }
-      return state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote)
+    // voteAnecdote (state, action){      
+    //   const id = action.payload
+    //   const anecdoteToChange = state.find(n => n.id === id)
+    //   const changedAnecdote = {
+    //     ...anecdoteToChange,
+    //     votes: anecdoteToChange.votes +1
+    //   }
+    //   return state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote)
+    // },
+    updateAnecdote(state, action) { // 6.18 **4** Redux updates the state
+      const updatedAnecdote = action.payload
+      return state.map(a =>
+        a.id !== updatedAnecdote.id ? a : updatedAnecdote
+      )
     },
     appendAnecdote(state, action) {
       state.push(action.payload)
@@ -91,7 +97,16 @@ export const createAnecdote = content => {
   }
 }
 
-export const { voteAnecdote, appendAnecdote, setAnecdotes } = anecdoteSlice.actions
+export const voteAnecdote = (id) => {  // 6.18 **2** Redux Thunk handles the async logic in voteAnecdote
+  return async (dispatch, getState) => {
+    const anecdotes = getState().anecdotes
+    const anecdoteToVote = anecdotes.find(a => a.id === id)
+    const updatedAnecdote = await anecdotesService.voteAnecdote(anecdoteToVote)
+    dispatch(updateAnecdote(updatedAnecdote))
+  }
+}
+
+export const { appendAnecdote, setAnecdotes, updateAnecdote } = anecdoteSlice.actions
 export const { setFilter } = filterSlice.actions
 export const { setNotification, clearNotification } = notificationSlice.actions
 export const notificationReducer = notificationSlice.reducer

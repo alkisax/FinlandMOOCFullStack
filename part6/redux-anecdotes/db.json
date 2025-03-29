@@ -38,12 +38,20 @@
     {
       "id": "57a1",
       "content": "dsg",
-      "important": false
+      "important": false,
+      "votes": 6
     },
     {
       "id": "dfa5",
       "content": "is it stored in the backend?",
-      "important": false
+      "important": false,
+      "votes": 1
+    },
+    {
+      "id": "aefa",
+      "content": "test vote",
+      "important": false,
+      "votes": null
     }
   ]
 }

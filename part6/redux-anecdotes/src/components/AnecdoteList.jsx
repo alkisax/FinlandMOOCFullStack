@@ -12,8 +12,7 @@ const AnecdoteList = () => {
     : anecdotes;
   
   const vote = (id, content) => {
-    console.log('vote', id)
-    dispatch(voteAnecdote(id))
+    dispatch(voteAnecdote(id))  //6.18 **1**  Vote action gets dispatched from the component
     dispatch(setNotification(`You voted for: ${content}`))
     setTimeout(() => {
       dispatch(clearNotification())
