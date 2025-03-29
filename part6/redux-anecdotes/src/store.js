@@ -106,6 +106,15 @@ export const voteAnecdote = (id) => {  // 6.18 **2** Redux Thunk handles the asy
   }
 }
 
+export const setNotificationWithTimeout = (message, timeInSeconds) => {
+  return async (dispatch) => {
+    dispatch(setNotification(message))
+    setTimeout(() => {
+      dispatch(clearNotification())
+    }, timeInSeconds * 1000)
+  }
+}
+
 export const { appendAnecdote, setAnecdotes, updateAnecdote } = anecdoteSlice.actions
 export const { setFilter } = filterSlice.actions
 export const { setNotification, clearNotification } = notificationSlice.actions
