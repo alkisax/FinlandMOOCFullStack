@@ -300,6 +300,8 @@ Jest testing library for the project
 React & Vite
   npm create vite@latest testTarot -- --template react
   npm install
+Router
+  npm install react-router-dom
 Backend Dependencies
   npm install express
   npm install cors
