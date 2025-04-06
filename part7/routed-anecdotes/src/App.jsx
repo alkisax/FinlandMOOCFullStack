@@ -23,14 +23,44 @@ const Menu = () => {
   )
 }
 
-const AnecdoteList = ({ anecdotes }) => (
-  <div>
+const AnecdoteList = ({ anecdotes }) => {
+  
+  const linkStyle = {
+    padding: 5,
+    textDecoration: 'none', // Removes underline
+    color: 'inherit',      // Uses parent's text color
+    cursor: 'pointer'      // Still shows pointer on hover
+  };
+
+  return (
+    <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => 
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`} style={linkStyle}>
+            {anecdote.content}
+          </Link>
+        </li>)}
     </ul>
   </div>
-)
+  )
+}
+
+const Anecdote = ({ anecdotes }) => {
+  const id = useParams().id
+  const anecdote = anecdotes.find(n => n.id === Number(id))
+
+  return (
+    <>
+      <p>Content: {anecdote.content}</p>
+      <p>Author: {anecdote.author}</p>
+      <p>Info: {anecdote.info}</p>
+      <p>Votes: {anecdote.votew}</p>
+      <p>Id: {anecdote.id}</p>
+    </>
+  )
+}
 
 const About = () => (
   <div>
@@ -137,6 +167,7 @@ const App = () => {
       <h1>Software anecdotes</h1>
       <Menu />
       <Routes>
+        <Route path='/anecdotes/:id' element={<Anecdote anecdotes={anecdotes} />} />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path="/about" element={<About />} />
         <Route path='/menu' element={<Menu />} />
