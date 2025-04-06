@@ -5,7 +5,7 @@ import {
   Route,
   Link,
   Navigate,
-  useParams,
+  // useParams,
   useNavigate,
   useMatch
 } from "react-router-dom"
@@ -47,16 +47,16 @@ const AnecdoteList = ({ anecdotes }) => {
   )
 }
 
-const Anecdote = ({ anecdotes }) => {
-  const id = useParams().id
-  const anecdote = anecdotes.find(n => n.id === Number(id))
+const Anecdote = ({ anecdote }) => {
+  // const id = useParams().id
+  // const anecdote = anecdotes.find(n => n.id === Number(id))
 
   return (
     <>
       <p>Content: {anecdote.content}</p>
       <p>Author: {anecdote.author}</p>
       <p>Info: {anecdote.info}</p>
-      <p>Votes: {anecdote.votew}</p>
+      <p>Votes: {anecdote.votes}</p>
       <p>Id: {anecdote.id}</p>
     </>
   )
@@ -143,9 +143,23 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
 
+  const match = useMatch('/anecdotes/:id')
+  const anecdote = match 
+    ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
+    : null
+
+  const navigate = useNavigate()
+
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+
+    setNotification(`A new anecdote "${anecdote.content}" created!`);
+    navigate('/');
+    setTimeout(() => {
+      setNotification('');
+    }, 5000);
+
   }
 
   const anecdoteById = (id) =>
@@ -166,8 +180,9 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      { notification && <div style={{ color: 'green', padding: '10px' }}>{notification}</div> }
       <Routes>
-        <Route path='/anecdotes/:id' element={<Anecdote anecdotes={anecdotes} />} />
+        <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path="/about" element={<About />} />
         <Route path='/menu' element={<Menu />} />
