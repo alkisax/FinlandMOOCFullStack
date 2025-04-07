@@ -1,20 +1,15 @@
 import { useState } from 'react'
 import { useField } from './hooks/index.js'
-import PropTypes from 'prop-types'
 import {
   // BrowserRouter as Router,
   Routes,
   Route,
   Link,
-  // Navigate,
+  Navigate,
   // useParams,
   useNavigate,
   useMatch
 } from "react-router-dom"
-
-CreateNew.propTypes = {
-  addNew: PropTypes.func.isRequired, // Ensure addNew is a required function
-}
 
 const Menu = () => {
   const padding = {
