@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
   Link,
-  Navigate,
+  // Navigate,
   // useParams,
   useNavigate,
   useMatch
@@ -86,15 +86,10 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  // const [content, setContent] = useState('')
-  // const [author, setAuthor] = useState('')
-  // const [info, setInfo] = useState('')
 
   const content = useField('text')
   const author = useField('text')
   const info = useField('text')
-  // const votes = useField('number')
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -106,6 +101,13 @@ const CreateNew = (props) => {
     })
   }
 
+  const handleReset = (event) => {
+    event.preventDefault()
+    content.onReset()
+    author.onReset()
+    info.onReset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -113,23 +115,20 @@ const CreateNew = (props) => {
         <div>
           content
           <input {...content} />
-          {/* <input name='content' value={content} onChange={(e) => setContent(e.target.value)} /> */}
         </div>
         <div>
           author
           <input {...author} />
-          {/* <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} /> */}
         </div>
         <div>
           url for more info
           <input {...info} />
-          {/* <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} /> */}
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
-
 }
 
 const App = () => {
