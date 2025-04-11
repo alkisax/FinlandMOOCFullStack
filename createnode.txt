@@ -302,6 +302,10 @@ React & Vite
   npm install
 Router
   npm install react-router-dom
+bootstrap
+  npm install react-bootstrap
+materialUi (εναλακτηκο του bootstrap)
+  npm install @mui/material @emotion/react @emotion/styled
 Backend Dependencies
   npm install express
   npm install cors
