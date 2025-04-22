@@ -1,6 +1,6 @@
 
 # npm 7+, extra double-dash is needed:
-npm create vite@latest querynoteapp  -- --template react
+npm create vite@latest loginApp  -- --template react
 cd introdemo
 npm install 
 The application is started as follows
