@@ -1,4 +1,9 @@
 
+const bmiArgs: string[] = process.argv.slice(2)
+const height: number = Number(args[0])
+const mass: number = Number(args[1])
+
+
 const calculateBmi  = (height: number, mass: number): string => {
   const heightInMeters: number = height / 100;
   const bmi: number =  mass / (heightInMeters**2)
@@ -22,4 +27,4 @@ const calculateBmi  = (height: number, mass: number): string => {
   }
 }
 
-console.log(calculateBmi(180, 74))
+console.log(calculateBmi(height, mass))
