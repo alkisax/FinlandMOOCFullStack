@@ -50,12 +50,11 @@ try {
   
 
 } catch (error: unknown){
-  let errorMessage = 'Something bad happende'
+  let errorMessage = 'Something bad happend'
   if (error instanceof Error) {
     errorMessage += 'Error: ' + error.message
   }
   console.log(errorMessage);
-  
 }
 
 
