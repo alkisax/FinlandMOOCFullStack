@@ -1,11 +1,23 @@
+interface ArgValues {
+  height: number;
+  mass: number;
+}
+
 try {
-  const bmiArgs: string[] = process.argv.slice(2)
-
-  if (bmiArgs.length < 2) throw new Error('Not enough arguments');
-  if (bmiArgs.length > 2) throw new Error('Too many arguments');
-
-  const height: number = Number(bmiArgs[0])
-  const mass: number = Number(bmiArgs[1])
+  // const bmiArgs: string[] = process.argv.slice(2)
+  const parseArguments = (args: string[]): ArgValues => {
+    if (args.length < 4) throw new Error('Not enough arguments');
+    if (args.length > 4) throw new Error('Too many arguments');
+    
+    if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+      return {
+        height: Number(args[2]),
+        mass: Number(args[3])
+      }
+    } else {
+      throw new Error('Provided values were not numbers!');
+    }
+  }
 
   const calculateBmi  = (height: number, mass: number): string => {
     const heightInMeters: number = height / 100;
@@ -30,12 +42,20 @@ try {
     }
   }
 
-  console.log(calculateBmi(height, mass))
+  const data: ArgValues = parseArguments(process.argv)
+  const height: number = data.height
+  const mass: number = data.mass
+  const responce = calculateBmi(height, mass)
+  console.log(responce);
+  
 
 } catch (error: unknown){
+  let errorMessage = 'Something bad happende'
   if (error instanceof Error) {
-    console.error('Error:', error.message);
-  } else {
-    console.error('Unknown error occurred');
+    errorMessage += 'Error: ' + error.message
   }
+  console.log(errorMessage);
+  
 }
+
+
