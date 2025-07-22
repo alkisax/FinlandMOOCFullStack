@@ -12,15 +12,15 @@ export const parseArguments = (args: string[]): ArgValues => {
     return {
       height: Number(args[2]),
       mass: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 export const calculateBmi  = (height: number, mass: number): string => {
   const heightInMeters: number = height / 100;
-  const bmi: number =  mass / (heightInMeters**2)
+  const bmi: number =  mass / (heightInMeters**2);
 
   if (bmi < 16.0) {
     return 'Underweight (Severe thinness)';
@@ -39,20 +39,20 @@ export const calculateBmi  = (height: number, mass: number): string => {
   } else {
     return 'Obese (Class III)';
   }
-}
+};
 
 
 if (require.main === module) {
   try {
-    const data: ArgValues = parseArguments(process.argv)
-    const height: number = data.height
-    const mass: number = data.mass
-    const response = calculateBmi(height, mass)
+    const data: ArgValues = parseArguments(process.argv);
+    const height: number = data.height;
+    const mass: number = data.mass;
+    const response = calculateBmi(height, mass);
     console.log(response);
   } catch (error: unknown){
-    let errorMessage = 'Something bad happend'
+    let errorMessage = 'Something bad happend';
     if (error instanceof Error) {
-      errorMessage += 'Error: ' + error.message
+      errorMessage += 'Error: ' + error.message;
     }
     console.log(errorMessage);
   }
