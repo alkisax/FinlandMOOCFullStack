@@ -1,14 +1,19 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "esModuleInterop": true,
-    "target": "ES6",
-    "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
     "sourceRoot": "src",
+    "types": ["node"],
+    "target": "ES2022",
     "strict": true,
-    "noImplicitAny": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
   },
   "lib": ["ES2024"]
 }
