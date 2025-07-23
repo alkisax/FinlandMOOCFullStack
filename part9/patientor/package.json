@@ -9,21 +9,27 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint .",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx} --ignore-pattern build --ignore-pattern dist",
     "start": "node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
     "@stylistic/eslint-plugin": "^5.2.2",
+    "@types/cors": "^2.8.19",
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
     "eslint": "^9.31.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^5.1.0"
+  },
+  "eslintConfig": {
+    "ignorePatterns": ["build/", "dist/"]
   }
 }
