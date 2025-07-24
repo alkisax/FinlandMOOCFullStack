@@ -15,5 +15,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node"
   },
+  "include": ["index.ts", "src/**/*"],
+  "exclude": ["frontend"],
   "lib": ["ES2024"]
 }

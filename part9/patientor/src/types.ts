@@ -1,5 +1,3 @@
-export type Weather = 'sunny' | 'rainy' | 'cloudy' | 'windy' | 'stormy';
-
 export interface Diagnosis {
   code: string;
   name: string;
@@ -14,4 +12,7 @@ export interface Patient {
   gender: string;
   occupation: string;
 };
+
+export type NonSsnPatientEntry= Omit<Patient, 'ssn'>;
+
 
