@@ -1,5 +1,17 @@
 import { NewPatientEntry, Gender } from '../types';
+import { newEntrySchema } from '../schema/zodSchema';
 
+
+const toNewPatientEntry = (object: unknown): NewPatientEntry => {
+  return newEntrySchema.parse(object);
+};
+
+export default toNewPatientEntry;
+
+
+
+
+// old code
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
@@ -47,7 +59,7 @@ const parseGender = (gender: unknown): Gender => {
   return gender;
 };
 
-const toNewPatientEntry = (object: unknown): NewPatientEntry => {
+const UNUSED_toNewPatientEntry = (object: unknown): NewPatientEntry => {
   if ( !object || typeof object !== 'object' ) {
     throw new Error('Incorrect or missing data');
   }
@@ -64,5 +76,4 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
   }
 throw new Error('Incorrect data: some fields are missing');
 };
-
-export default toNewPatientEntry;
+void UNUSED_toNewPatientEntry; //μια χρήση απλως για να μην μου εμφανίζει έρορ και να μην κάνω κομεντ αουτ ολα τα παραπάνω που δεν χρησιμοποιούντε
