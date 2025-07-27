@@ -19,11 +19,13 @@ function App() {
   const [isShowingComments, setIsShowingComments] = useState<boolean>(false);
   const [hasFetchedComments, setHasFetchedComments] = useState<boolean>(false);
   const [newEntry, setNewEntry] = useState<NewDiaryEntry>({
-    date: '1/1/1970',
+    date: '1970-01-01',
     weather: 'sunny',
     visibility: 'ok',
     comment: ''
   })
+  const [errorMsg, setErrorMsg] = useState<string>('')
+  const [isError, setIsError] = useState<boolean>(false)
 
   const url = 'http://localhost:3001'
 
@@ -90,14 +92,19 @@ function App() {
         comment: ''
       })      
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Failed to save entry:', error);
+      if (axios.isAxiosError(error) && error.response) {
+      const errorMessage =`${error.response.data?.error?.[0]?.message ?? 'Unknown error occurred'}`
+      console.log('Parsed error message:', errorMessage);
+      setErrorMsg(`Failed to save entry: ${errorMessage}`);
+
+      setIsError(true)
+      setTimeout(() => {
+          setIsError(false);
+        }, 7000);
       } else {
         console.error('unkown error');
       }
     }
-
-    
   }
 
   return (
@@ -106,6 +113,8 @@ function App() {
       <button onClick={handleShowCommentsBtn}>
         show comments
       </button>
+
+      {isError && <p style={{ color: 'red' }}><strong>{errorMsg}</strong></p>}
 
       <table>
         <thead>
@@ -136,31 +145,42 @@ function App() {
       </table>
       <br />
 
+      <div>
+        <h2>Add new entry</h2>
+        <form onSubmit={createEntry}>
+          <div>
+            <label>Date</label>
+            <input 
+              value={newEntry.date}
+              onChange={(event) => setNewEntry({ ...newEntry, date: event.target.value })}
+            />            
+          </div>
+          <div>
+            <label>Weather</label>
+            <input 
+              value={newEntry.weather}
+              onChange={(event) => setNewEntry({ ...newEntry, weather: event.target.value as Weather})}
+            />            
+          </div>
+          <div>
+            <label>visibility</label>
+            <input 
+              value={newEntry.visibility}
+              onChange={(event) => setNewEntry({ ...newEntry, visibility: event.target.value as Visibility})}
+            />            
+          </div>
+          <div>
+            <label>comment</label>
+            <input 
+              value={newEntry.comment}
+              onChange={(event) => setNewEntry({ ...newEntry, comment: event.target.value })}
+            />              
+          </div>
+      
+          <button type='submit'>add</button>
+        </form>
+      </div>
 
-      <form onSubmit={createEntry}>
-        <label>Date</label>
-        <input 
-          value={newEntry.date}
-          onChange={(event) => setNewEntry({ ...newEntry, date: event.target.value })}
-        />
-        <label>Weather</label>
-        <input 
-          value={newEntry.weather}
-          onChange={(event) => setNewEntry({ ...newEntry, weather: event.target.value as Weather})}
-        />
-        <label>visibility</label>
-        <input 
-          value={newEntry.visibility}
-          onChange={(event) => setNewEntry({ ...newEntry, visibility: event.target.value as Visibility})}
-        />
-        <label>comment</label>
-        <input 
-          value={newEntry.comment}
-          onChange={(event) => setNewEntry({ ...newEntry, comment: event.target.value })}
-        />        
-        <button type='submit'>add</button>
-
-      </form>
       <br />
     </>
   )
