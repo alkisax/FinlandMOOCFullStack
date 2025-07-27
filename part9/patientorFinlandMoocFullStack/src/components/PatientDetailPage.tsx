@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Patient, Gender } from '../types';
+import { Patient, Gender, Diagnosis } from '../types';
 import { useParams } from 'react-router-dom';
 import patientService from '../services/patients';
-import { TextField, InputLabel, Select, MenuItem, Box, Typography } from '@mui/material';
-
+import { TextField, Box, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { apiBaseUrl } from "../constants";
+import axios from 'axios';
 
 type Params = {
   id: string;
@@ -20,6 +21,7 @@ const PatientDetailPage = () => {
       dateOfBirth: '',
       entries: []
   });
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -35,9 +37,19 @@ const PatientDetailPage = () => {
     fetchPatient();
   },[id]);
 
+  useEffect (() => {
+    const fetchDiagnoses = async () => {
+      const diagnoses = await axios.get<Diagnosis[]>(`${apiBaseUrl}/diagnoses`);
+      if (!diagnoses) return;
+      console.log('diagnoses: ',diagnoses);
+      setDiagnoses(diagnoses.data);
+    };
+    fetchDiagnoses();
+  },[]);
+
 return (
   <div>
-    <form>
+    <form style={{ marginTop: '20px' }}>
       <TextField
         label="Name"
         fullWidth
@@ -86,9 +98,26 @@ return (
             <Typography variant='subtitle1'>{entry.date}&lt;-&gt;{entry.type}</Typography>
             <Typography variant='body2'>Specialist: {entry.specialist}</Typography>
             <Typography variant='body2'>Description: {entry.description}</Typography>
-            {entry.diagnosisCodes && (
-              <Typography variant='body2'>Diagnosis: {entry.diagnosisCodes.join(', ')}</Typography>
-            )}
+            <Box key={entry.id} sx={{ mb: 2, p: 2, border: '1px solid black' }}>
+              {entry.diagnosisCodes && (
+              <Typography variant='body2'>
+                Diagnoses:
+<List>
+  {entry.diagnosisCodes.map(code => {
+    const diag = diagnoses.find(d => d.code === code);
+    return (
+      <ListItem key={code} sx={{ pl: 2 }}>
+        <ListItemText 
+          primary={`${code} – ${diag ? diag.name : 'Unknown diagnosis'}`} 
+        />
+      </ListItem>
+    );
+  })}
+</List>
+              </Typography>
+              )}              
+            </Box>
+
           </Box>
         );
       })}
@@ -98,3 +127,5 @@ return (
 };
 
 export default PatientDetailPage;
+
+
