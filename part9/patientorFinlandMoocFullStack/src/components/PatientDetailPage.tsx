@@ -35,23 +35,6 @@ const PatientDetailPage = () => {
     fetchPatient();
   },[id]);
 
-  // const patient = (): Patient => {
-  //   let patient = patients.find((patient) => id === patient.id);
-  //   if (!patient) {
-  //     patient = {
-  //     id: '',
-  //     name: 'Unknown',
-  //     occupation: '',
-  //     gender: Gender.Other,
-  //     ssn: '',
-  //     dateOfBirth: '',
-  //     entries: []
-  //     };
-  //     return patient;
-  //   }
-  //   return patient;
-  // };
-
 return (
   <div>
     <form>
