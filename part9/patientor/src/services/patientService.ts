@@ -16,11 +16,17 @@ const getPatients = (): Patient[] => {
   return patients;
 };
 
+const findById = (id: string): Patient | undefined => {
+  const patient = patients.find(patient => patient.id === id);
+  return patient;
+};
+
 const addPatient = ( entry: NewPatientEntry ): Patient => {
   const id = uuid();
   const newPatientEntry = {
     id,
-    ...entry
+    ...entry,
+    entries: []
   };
 
   patients.push(newPatientEntry);
@@ -30,5 +36,6 @@ const addPatient = ( entry: NewPatientEntry ): Patient => {
 export default {
   getNonSsnPatientEntry,
   getPatients,
+  findById,
   addPatient
 };
