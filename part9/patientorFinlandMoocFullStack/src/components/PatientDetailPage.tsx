@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Patient, Gender } from '../types';
 import { useParams } from 'react-router-dom';
 import patientService from '../services/patients';
-import { TextField, InputLabel, Select, MenuItem } from '@mui/material';
+import { TextField, InputLabel, Select, MenuItem, Box, Typography } from '@mui/material';
 
 
 type Params = {
@@ -62,18 +62,37 @@ return (
         value={patientInfo.occupation}
         InputProps={{ readOnly: true }}
       />
+      {/* <TextField
+        label="Entries"
+        fullWidth
+        value={JSON.stringify(patientInfo.entries, null, 2)}
+        InputProps={{ readOnly: true }}
+      /> */}
 
-      <InputLabel style={{ marginTop: 20 }}>Gender</InputLabel>
-      <Select
+      <TextField
+        label="Gender"
         fullWidth
         value={patientInfo.gender}
-        disabled
-      >
-        <MenuItem value={Gender.Male}>Male</MenuItem>
-        <MenuItem value={Gender.Female}>Female</MenuItem>
-        <MenuItem value={Gender.Other}>Other</MenuItem>
-      </Select>
+        InputProps={{ readOnly: true }}
+      />
     </form>
+
+    <div>
+      <h3>Entry info:</h3>
+      {patientInfo.entries?.map((entry) => {
+        return (
+          
+          <Box key={entry.id} sx={{ mb: 2, p: 2, border: '1px solid black' }}>
+            <Typography variant='subtitle1'>{entry.date}&lt;-&gt;{entry.type}</Typography>
+            <Typography variant='body2'>Specialist: {entry.specialist}</Typography>
+            <Typography variant='body2'>Description: {entry.description}</Typography>
+            {entry.diagnosisCodes && (
+              <Typography variant='body2'>Diagnosis: {entry.diagnosisCodes.join(', ')}</Typography>
+            )}
+          </Box>
+        );
+      })}
+    </div>
   </div>
 );
 };
