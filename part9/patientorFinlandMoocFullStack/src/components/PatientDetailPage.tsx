@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Patient, Gender, Diagnosis } from '../types';
 import { useParams } from 'react-router-dom';
 import patientService from '../services/patients';
-import { TextField, Box, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { TextField, Box, Typography, List, ListItem } from '@mui/material';
 import { apiBaseUrl } from "../constants";
 import axios from 'axios';
 
@@ -107,9 +107,7 @@ return (
     const diag = diagnoses.find(d => d.code === code);
     return (
       <ListItem key={code} sx={{ pl: 2 }}>
-        <ListItemText 
-          primary={`${code} – ${diag ? diag.name : 'Unknown diagnosis'}`} 
-        />
+        {`${code} - ${diag ? diag.name : 'Unknown diagnosis'} ${diag ? ' - ' + diag.latin : ''}`} 
       </ListItem>
     );
   })}
