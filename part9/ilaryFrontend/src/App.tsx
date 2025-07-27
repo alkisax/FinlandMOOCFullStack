@@ -19,7 +19,7 @@ function App() {
   const [isShowingComments, setIsShowingComments] = useState<boolean>(false);
   const [hasFetchedComments, setHasFetchedComments] = useState<boolean>(false);
   const [newEntry, setNewEntry] = useState<NewDiaryEntry>({
-    date: '1970-01-01',
+    date: '2025-01-01',
     weather: 'sunny',
     visibility: 'ok',
     comment: ''
@@ -80,13 +80,17 @@ function App() {
 
   const createEntry = async (event: React.SyntheticEvent) => {
     event.preventDefault();
+    console.log("to be 'posted' :", newEntry);
+    
     
     try {
       const response = await axios.post(`${url}/api/diaries`, newEntry)
       console.log("saved", response.data);
 
+      setDiaryEntries(prevEntries => [...prevEntries, response.data]);
+
       setNewEntry({
-        date: '1/1/1970',
+        date: '2025-01-01',
         weather: 'sunny',
         visibility: 'ok',
         comment: ''
@@ -150,25 +154,58 @@ function App() {
         <form onSubmit={createEntry}>
           <div>
             <label>Date</label>
-            <input 
+            <input
+              type='date'
               value={newEntry.date}
               onChange={(event) => setNewEntry({ ...newEntry, date: event.target.value })}
             />            
           </div>
           <div>
-            <label>Weather</label>
-            <input 
-              value={newEntry.weather}
-              onChange={(event) => setNewEntry({ ...newEntry, weather: event.target.value as Weather})}
-            />            
+            <label>Weather:</label>
+            {['sunny', 'rainy', 'cloudy', 'stormy', 'windy'].map(weather => {
+              return (
+                <label 
+                  key={weather}
+                  style={{ display: 'block', marginBottom: '5px' }}
+                >
+                  <input
+                    type="radio"
+                    name='weather'
+                    value={weather}
+                    checked={newEntry.weather === weather}
+                    onChange={(event) => {
+                      setNewEntry({ ...newEntry, weather: event.target.value as Weather })
+                    }}
+                  />
+                  {weather}
+                </label>
+              )              
+            })}
           </div>
+
+
           <div>
-            <label>visibility</label>
-            <input 
-              value={newEntry.visibility}
-              onChange={(event) => setNewEntry({ ...newEntry, visibility: event.target.value as Visibility})}
-            />            
+            <label>visibility:</label>
+            {['great', 'good', 'ok', 'poor'].map((visibility) => {
+              return (
+                <label
+                  key={visibility}
+                  style={{ display: 'block', marginBottom: '5px' }}
+                >
+                  <input 
+                    type="radio" 
+                    value={visibility}
+                    checked={newEntry.visibility === visibility}
+                    onChange={(event) => {
+                      setNewEntry({ ...newEntry, visibility: event.target.value as Visibility})
+                    }}
+                  />
+                  {visibility}
+                </label>
+              )
+            })}
           </div>
+
           <div>
             <label>comment</label>
             <input 
