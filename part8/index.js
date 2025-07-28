@@ -121,6 +121,15 @@ const typeDefs = `
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [AuthorWithBookCount!]!
   }
+
+  type Mutation {
+    addBook(
+      title: String!
+      published: Int!
+      author: String!
+      genres: [String]!
+    ): Book
+  }
 `
 
 const resolvers = {
@@ -147,6 +156,32 @@ const resolvers = {
         ...author,
         bookCount: books.filter(book => book.author === author.name).length
       }))      
+    }
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      
+      if (books.find(b => b.title === args.title)) {
+        throw new GraphQLError('book already exists', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name
+          }
+        })
+      }
+
+      if (!authors.find(auth => auth.name === args.author)) {
+        const newAuthor = {
+          name: args.author,
+          id: uuid()
+        }
+        authors = authors.concat(newAuthor)
+      }
+
+      const book = { ...args, id: uuid() }
+      books = books.concat(book)
+      return book
+
     }
   }
 }
