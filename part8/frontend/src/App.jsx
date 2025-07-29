@@ -1,24 +1,60 @@
 import { useState } from "react";
+import { Routes, Route, Navigate,Link  } from "react-router-dom";
+
+import { useQuery } from '@apollo/client'
+import { FIND_AUTHOR, ALL_AUTHORS, TEST_QUERY } from './queries'
+
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
+import { useEffect } from "react";
 
 const App = () => {
   const [page, setPage] = useState("authors");
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  const { loading: gqlLoading, error: gqlError, data: authorData } = useQuery(ALL_AUTHORS, {
+
+  })
+  
+  useEffect(() => {
+    setLoading(gqlLoading)
+    if (gqlError) {
+      setError(gqlError.message)
+    } else {
+      setError(false);
+    }
+  },[gqlLoading, gqlError])
+
+
+  console.log(authorData);
 
   return (
     <div>
+      {loading && (
+        <div>Loading...</div>
+      )}
+      {error && <div style={{ color: 'red' }}>Error: {error}</div>}
+
       <div>
-        <button onClick={() => setPage("authors")}>authors</button>
-        <button onClick={() => setPage("books")}>books</button>
-        <button onClick={() => setPage("add")}>add book</button>
+        <Link to="/authors">
+          <button onClick={() => setPage("authors")}>authors</button>        
+        </Link>
+        <Link to="/books">
+          <button onClick={() => setPage("books")}>books</button>        
+        </Link>
+        <Link to="/add">
+          <button onClick={() => setPage("add")}>add book</button>        
+        </Link>
       </div>
 
-      <Authors show={page === "authors"} />
-
-      <Books show={page === "books"} />
-
-      <NewBook show={page === "add"} />
+      <Routes>
+        <Route path="/" element={<Navigate to="/authors" />} />
+        <Route path="/authors" element={<Authors authorData={authorData} loading={loading} />} />
+        <Route path="/books" element={<Books />} />
+        <Route path="/add" element={<NewBook />} />
+      </Routes>
     </div>
   );
 };
