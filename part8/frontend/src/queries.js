@@ -27,3 +27,13 @@ export const FIND_AUTHOR = gql`
     }
   }
 `
+
+export const ALL_BOOKS_NO_GENRE = gql`
+  query {
+    allBooks {
+      title
+      published
+      author
+    }
+  }
+`
