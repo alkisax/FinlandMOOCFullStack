@@ -48,21 +48,36 @@ const Authors = ({ authorData, loading }) => {
 
 
       <h2><strong>Set birthyear</strong></h2>
-      <form onSubmit={submitBirthyear}>
-        <label>name: </label>
-        <input 
-          value={name}
-          onChange={({ target }) => setName(target.value)}
-        />
-        <label>born: </label>
-        <input 
-          value={born}
-          onChange={({ target }) => setBorn(target.value)}
-        />
-        <button type="submit">
-          submit
-        </button>
-      </form>
+
+        <form onSubmit={submitBirthyear}>
+          <div style={{ display: 'block' }}>
+            <label>name: </label>
+            <select
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            >
+              {authors.map((auth) => {
+                return (
+                  <option key={auth.id} value={auth.name}>
+                    {auth.name}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          <div style={{ display: 'block' }}>
+            <label>born: </label>
+            <input 
+              value={born}
+              onChange={({ target }) => setBorn(target.value)}
+            />            
+          </div>
+          <button type="submit">
+            submit
+          </button>
+        </form>
+
+
     </div>
   )
 }
