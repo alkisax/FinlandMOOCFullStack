@@ -32,7 +32,7 @@ const server = new ApolloServer({
 })
 
 
-const context = async ({ req  }) => {
+const context = async ({ req }) => {
   // αυτή η αλλαγή είναι απαραίτητη στην μεταφορα απο REST σε GraphQL
   // const token = getTokenFrom(req)
   const headers =  req?.headers || {}
