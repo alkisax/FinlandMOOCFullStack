@@ -11,6 +11,7 @@ const Authors = ({ authorData, loading }) => {
   })
 
   if (loading) return <p>Loading...</p>;
+  if (!authorData || !authorData.allAuthors) return <p>Error loading authors</p>
 
   const authors = authorData.allAuthors
 
@@ -56,6 +57,9 @@ const Authors = ({ authorData, loading }) => {
               value={name}
               onChange={(event) => setName(event.target.value)}
             >
+              <option value="" disabled>
+                Select author
+              </option>
               {authors.map((auth) => {
                 return (
                   <option key={auth.id} value={auth.name}>

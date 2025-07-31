@@ -26,6 +26,8 @@ export const resolvers = {
       await Author.findOne({ name: args.name }),
 
     allBooks: async (root, args) => {
+      console.log('entered all books');
+      
       const filter = {}
 
       if (args.genre) {
@@ -36,24 +38,44 @@ export const resolvers = {
         if (!author) return []
         filter.author = author._id
       }
+      // console.log('all books resolver, filter: ', filter);
 
       const books = await Book.find(filter).populate('author')
+
+      // console.log('all books resolver: returned books: ', books);
       return books
     },
 
     allAuthors: async () => {
+      console.log('entered fetch allAuthors backend');
+      
       const authors = await Author.find({})
+      // console.log('authors: ', authors);      
+
       const bookCounts = await Book.aggregate([
         { $group: { _id: '$author', count: { $sum: 1 } } }
       ])
+
+      // console.log('bookcounts', bookCounts);      
 
       const countMap = {}
       bookCounts.forEach(entry => {
         countMap[entry._id.toString()] = entry.count
       })
 
+      // const returnedObj = authors.map(author => ({
+      //   id: author._id.toString(),
+      //   name: author.name,
+      //   born: author.born,
+      //   bookCount: countMap[author._id.toString()] || 0
+      // }))
+      // console.log('returnedObj', returnedObj);
+      // return returnedObj
+
       return authors.map(author => ({
-        ...author.toObject(),
+        id: author._id.toString(),
+        name: author.name,
+        born: author.born,
         bookCount: countMap[author._id.toString()] || 0
       }))
     }
@@ -114,7 +136,11 @@ export const resolvers = {
     },
 
     editAuthor: async (root, args) => {
+      console.log('entered backend editAuth resolver');      
+
       const author = await Author.findOne({ name: args.name })
+      // console.log('editAuth author', author);
+      
       if (!author) return null
 
       author.born = args.setBornTo
@@ -130,6 +156,7 @@ export const resolvers = {
         })
       }
 
+      // console.log('editAuth returned author', author);
       return author
     },
 
@@ -143,7 +170,7 @@ export const resolvers = {
           }
         })
       }
-      
+
       const saltRounds = 10
       const hashedPassword = await bcrypt.hash(args.password, saltRounds)
 
@@ -169,6 +196,7 @@ export const resolvers = {
       let passwordCorrect = false;
       if (user) {
         passwordCorrect = await verifyPassword(args.password, user.hashedPassword)
+        console.log('passwordCorrect', passwordCorrect);
       }
 
       if ( !user || !passwordCorrect ) {

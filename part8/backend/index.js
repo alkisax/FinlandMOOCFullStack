@@ -36,7 +36,7 @@ const context = async ({ req }) => {
   // αυτή η αλλαγή είναι απαραίτητη στην μεταφορα απο REST σε GraphQL
   // const token = getTokenFrom(req)
   const headers =  req?.headers || {}
-  console.log('Request headers:', headers) 
+  // console.log('Request headers:', headers) 
   const token = getTokenFrom(headers)
 
   if (token) {

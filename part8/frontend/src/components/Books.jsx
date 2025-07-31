@@ -1,6 +1,8 @@
 const Books = ({ booksData, loading }) => {
   if (loading) return <p>Loading...</p>;
 
+  if (!booksData || !booksData.allBooks) return <p>Error loading books</p>;
+
   const books = booksData.allBooks
 
   // const books = []
@@ -18,9 +20,9 @@ const Books = ({ booksData, loading }) => {
           </tr>
           {books.map((a) => (
             <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author}</td>
-              <td>{a.published}</td>
+              <td>{a.author.title}</td>
+              <td>{a.author.author}</td>
+              <td>{a.author.published}</td>
             </tr>
           ))}
         </tbody>

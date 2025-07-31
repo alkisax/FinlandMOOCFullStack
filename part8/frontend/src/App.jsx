@@ -7,19 +7,37 @@ import { FIND_AUTHOR, ALL_AUTHORS, TEST_QUERY, ALL_BOOKS_NO_GENRE } from './quer
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
+import Login from './components/Login'
 import { useEffect } from "react";
 
 const App = () => {
   const [page, setPage] = useState("authors");
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [token, setToken] = useState(null)
 
   const { loading: authLoading, error: authError, data: authorData } = useQuery(ALL_AUTHORS)
   const { loading: bookLoading, error: bookError, data: booksData } = useQuery(ALL_BOOKS_NO_GENRE)
 
   const gqlLoading = authLoading || bookLoading
   const gqlError = authError || bookError
-  
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token')
+    if (savedToken) {
+      setToken(savedToken)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('Token state set to:', token)
+  }, [token])
+
+  const logout = () => {
+    setToken(null)
+    localStorage.removeItem('token')
+  }
+
   useEffect(() => {
     setLoading(gqlLoading)
     if (gqlError) {
@@ -29,11 +47,22 @@ const App = () => {
     }
   },[gqlLoading, gqlError])
 
+  useEffect(() => {
+    if (booksData) console.log('Books:', booksData)
+    if (authorData) console.log('Authors:', authorData)
+  }, [booksData])
 
   console.log(booksData);
 
   return (
     <div>
+
+      {token ? (
+        <button onClick={logout}>logout</button>
+      ) : (
+        <Link to="/login"><button>login</button></Link>
+      )}
+
       {loading && (
         <div>Loading...</div>
       )}
@@ -49,6 +78,9 @@ const App = () => {
         <Link to="/add">
           <button onClick={() => setPage("add")}>add book</button>        
         </Link>
+        <Link to="/login">
+          <button>login</button>
+        </Link>
       </div>
 
       <Routes>
@@ -56,6 +88,7 @@ const App = () => {
         <Route path="/authors" element={<Authors authorData={authorData} loading={loading} />} />
         <Route path="/books" element={<Books booksData={booksData} loading={loading}  />} />
         <Route path="/add" element={<NewBook />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
       </Routes>
     </div>
   );
