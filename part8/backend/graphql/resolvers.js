@@ -87,6 +87,8 @@ export const resolvers = {
 
   Mutation: {
     addBook: async (root, args) => {
+      console.log('entered backend resolvers addbook');
+      
       const existingBook = await Book.findOne({ title: args.title })
       if (existingBook) {
         throw new GraphQLError('book already exists', {
@@ -119,6 +121,7 @@ export const resolvers = {
         genres: args.genres,
         author: author._id
       })
+      console.log('entered backend resolvers addbook. Book to add: ', book);
 
       try {
         await book.save()        

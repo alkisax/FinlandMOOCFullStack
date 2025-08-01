@@ -4,7 +4,9 @@ const Books = ({ booksData, loading }) => {
   if (!booksData || !booksData.allBooks) return <p>Error loading books</p>;
 
   const books = booksData.allBooks
-
+  console.log('books component, books', books);
+  console.log('books component, books', books);
+  
   // const books = []
 
   return (
@@ -18,11 +20,11 @@ const Books = ({ booksData, loading }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
-            <tr key={a.title}>
-              <td>{a.author.title}</td>
-              <td>{a.author.author}</td>
-              <td>{a.author.published}</td>
+          {books.map((b) => (
+            <tr key={b.title}>
+              <td>{b.title}</td>
+              <td>{b.author.name}</td>
+              <td>{b.published}</td>
             </tr>
           ))}
         </tbody>
