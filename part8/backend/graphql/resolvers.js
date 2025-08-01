@@ -12,6 +12,7 @@ import { verifyPassword, generateAccessToken } from '../services/auth.service.js
 export const resolvers = {
   Query: {
     me: (root, args, context) => {
+      console.log("backend, entered me");
       return context.currentUser || null
     },
 
@@ -193,6 +194,15 @@ export const resolvers = {
           })
         })
     },
+    editFavoriteGenre: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new GraphQLError("Not authenticated", { extensions: { code: 'UNAUTHORIZED' } })
+      }
+      currentUser.favoriteGenre = args.genre
+      await currentUser.save()
+      return currentUser
+    },    
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
 

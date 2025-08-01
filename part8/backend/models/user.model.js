@@ -10,6 +10,10 @@ const schema = new Schema({
     type: String,
     required: [true, 'password is required'],
   },
+  favoriteGenre: {
+    type: String,
+    default: ''
+  },
   friends: [
     {
       type: Schema.Types.ObjectId,

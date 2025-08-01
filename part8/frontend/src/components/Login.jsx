@@ -15,9 +15,9 @@ const Login = ({ setToken }) => {
     try {
       const { data } = await login({ variables: { username, password } })
       const token = data.login.value
-      console.log('Token received from backend:', token)
+      // console.log('Token received from backend:', token)
       localStorage.setItem('token', token)
-      console.log('Token stored in localStorage:', localStorage.getItem('token'))
+      // console.log('Token stored in localStorage:', localStorage.getItem('token'))
       setToken(token)
       navigate('/') 
     } catch (err) {

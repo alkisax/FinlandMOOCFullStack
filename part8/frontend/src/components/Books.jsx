@@ -1,12 +1,26 @@
 import { useState, useEffect } from "react";
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS, ME } from '../queries'
 import { useQuery } from '@apollo/client'
 
 const Books = ({ loading, loggedIn }) => {
   const [genres, setGenres] = useState([])
   const [selectedGenre, setSelectedGenre] = useState('')
+  const [favoriteGenre, setFavoriteGenre] = useState('')
+
+  // const skipMeQuery = !loggedIn || !localStorage.getItem('token')
 
   const { loading: bookLoading, error: bookError, data: booksData } = useQuery(ALL_BOOKS)
+  const { loading: meLoading, error: meError, data: meData } = useQuery(ME)
+
+  useEffect(() => {
+    if (!meLoading && meData?.me) {
+      console.log('Logged in user info (me):', meData.me)
+      const favoriteGenre = meData.me.favoriteGenre
+      console.log('favoriteGenre: ', favoriteGenre);
+      setFavoriteGenre(favoriteGenre) 
+      setSelectedGenre(favoriteGenre)    
+    }
+  }, [loggedIn, meData])
 
   useEffect (() => {
     if (booksData) {
@@ -33,8 +47,6 @@ const Books = ({ loading, loggedIn }) => {
   if (!booksData || !booksData.allBooks) return <p>Error loading books</p>;
 
   const books = booksData.allBooks
-  console.log('books component, books', books);
-  console.log('books component, books', books);
   
   // const books = []
 
@@ -47,10 +59,19 @@ const Books = ({ loading, loggedIn }) => {
         <div>
           <h3>Genres</h3>
           {genres.map((g) => (
-            <button key={g} onClick={() => setSelectedGenre(g)}>{g}</button>
-          ))}
+              <button key={g} onClick={() => setSelectedGenre(g)}>{g}</button>
+            ))            
+          }
         </div>
+        
+        {favoriteGenre && favoriteGenre === selectedGenre &&
+          <>
+            <h4>recommendations</h4>
+            <p>books in yout favorite genre <strong>{favoriteGenre}</strong></p>          
+          </>
+        }
 
+        {selectedGenre && <h4>books in genre {selectedGenre}:</h4>}
         <table>
           <tbody>
             <tr>

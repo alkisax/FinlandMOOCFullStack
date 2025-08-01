@@ -1,6 +1,7 @@
 export const typeDefs = `#graphql
   type User {
     username: String!
+    favoriteGenre: String
     friends: [User!]!
     id: ID!
   }
@@ -64,6 +65,9 @@ export const typeDefs = `#graphql
       username: String!
       password: String!
     ): Token
+    editFavoriteGenre(
+      genre: String!
+    ): User
   }
 `
 
