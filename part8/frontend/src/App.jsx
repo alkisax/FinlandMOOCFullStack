@@ -16,6 +16,7 @@ const App = () => {
   const [loading, setLoading] = useState(true)
   const [token, setToken] = useState(null)
   const [loggedIn, setLoggedIn] = useState(false)
+  const [ready, setReady] = useState(false)
 
   const { loading: authLoading, error: authError, data: authorData } = useQuery(ALL_AUTHORS)
   const { loading: bookLoading, error: bookError, data: booksData } = useQuery(ALL_BOOKS_NO_GENRE)
@@ -29,7 +30,7 @@ const App = () => {
       setToken(savedToken)
       setLoggedIn(true)
     }
-    console.log('Token state set to:', token)
+    setReady(true)
     console.log('loged in: ', loggedIn);  
   }, [loggedIn, token])
 
@@ -53,6 +54,7 @@ const App = () => {
     if (authorData) console.log('Authors:', authorData)
   }, [booksData])
 
+  if (!ready) return <div>Initializing...</div>
   return (
     <div>
 
@@ -91,10 +93,27 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Navigate to="/authors" />} />
-        <Route path="/authors" element={<Authors authorData={authorData} loading={loading} loggedIn={loggedIn} />} />
-        <Route path="/books" element={<Books booksData={booksData} loading={loading} />} />
-        <Route path="/add" element={<NewBook loggedIn={loggedIn} setError={setError} />} />
-        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route path="/authors" element={<Authors 
+          authorData={authorData}
+          loading={loading}
+          loggedIn={loggedIn} 
+        />} />
+
+        <Route path="/books" element={<Books 
+          booksData={booksData} 
+          loading={loading} 
+          key={token} // 💡 Force re-mount on login/logout
+        />} />
+
+        <Route path="/add" element={<NewBook 
+          loggedIn={loggedIn}
+          setError={setError} 
+        />} />
+
+        <Route path="/login" element={<Login
+          setToken={setToken}
+        />} />
+
       </Routes>
     </div>
   );

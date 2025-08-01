@@ -18,6 +18,13 @@ export const resolvers = {
 
     bookCount: async () => await Book.countDocuments(),
 
+    allGenres: async () => {
+      const books = await Book.find({})
+      const genres = new Set()
+      books.forEach(b => b.genres.forEach(g => genres.add(g)))
+      return [...genres]
+    },
+
     authorCount: async () => await Author.countDocuments(),
 
     findBook: async (root, args) => 

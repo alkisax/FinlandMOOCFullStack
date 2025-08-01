@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ALL_BOOKS, ME } from '../queries'
+import { ALL_BOOKS, ME, ALL_GENRES } from '../queries'
 import { useQuery } from '@apollo/client'
 
 const Books = ({ loading, loggedIn }) => {
@@ -7,10 +7,11 @@ const Books = ({ loading, loggedIn }) => {
   const [selectedGenre, setSelectedGenre] = useState('')
   const [favoriteGenre, setFavoriteGenre] = useState('')
 
-  // const skipMeQuery = !loggedIn || !localStorage.getItem('token')
-
-  const { loading: bookLoading, error: bookError, data: booksData } = useQuery(ALL_BOOKS)
+  const { loading: bookLoading, error: bookError, data: booksData } = useQuery(ALL_BOOKS, {
+    variables: {genre: selectedGenre || null}
+  })
   const { loading: meLoading, error: meError, data: meData } = useQuery(ME)
+  const { loading: genreLoading, error: genreError, data: genreData } = useQuery(ALL_GENRES)
 
   useEffect(() => {
     if (!meLoading && meData?.me) {
@@ -18,25 +19,21 @@ const Books = ({ loading, loggedIn }) => {
       const favoriteGenre = meData.me.favoriteGenre
       console.log('favoriteGenre: ', favoriteGenre);
       setFavoriteGenre(favoriteGenre) 
-      setSelectedGenre(favoriteGenre)    
+
+      console.log('favorite genre', favoriteGenre);
     }
-  }, [loggedIn, meData])
+  }, [loggedIn, meLoading, meData])
+
+  useEffect(() => {
+      console.log('entered setSelctGenre useEffect');
+      setSelectedGenre(favoriteGenre)
+  }, [favoriteGenre])
 
   useEffect (() => {
-    if (booksData) {
-      const allGenres = []
-      booksData.allBooks.forEach(b => {
-        if (b.genres) {
-          b.genres.forEach(g => {
-            if (!allGenres.includes(g)) {
-              allGenres.push(g)
-            }
-        })
-        }
-      })
-      setGenres(allGenres)
-    }
-  }, [booksData])
+    const fetchedGenres = genreData?.allGenres || []
+    setGenres(fetchedGenres)
+  }, [genreData])
+
 
   useEffect(() => {
     console.log("genres: ", genres)
@@ -79,40 +76,18 @@ const Books = ({ loading, loggedIn }) => {
               <th>author</th>
               <th>published</th>
             </tr>
-            {books.map((b) => {
-              if (b.genres.includes(selectedGenre)) {
-                return (
-                  <tr key={b.title}>
-                    <td>{b.title}</td>
-                    <td>{b.author.name}</td>
-                    <td>{b.published}</td>
-                  </tr>
-                )
-              }
-            })}
+            {books
+              .filter((b) => b.genres.includes(selectedGenre))
+              .map((b) => (
+                <tr key={b.title}>
+                  <td>{b.title}</td>
+                  <td>{b.author.name}</td>
+                  <td>{b.published}</td>
+                </tr>
+            ))}
           </tbody>
         </table>
       </div>
-
-
-      <br />
-      <h3>All books</h3>
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
-          {books.map((b) => (
-            <tr key={b.title}>
-              <td>{b.title}</td>
-              <td>{b.author.name}</td>
-              <td>{b.published}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   )
 }

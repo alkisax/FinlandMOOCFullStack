@@ -1,25 +1,33 @@
 import { useState } from 'react'
-import { useMutation } from '@apollo/client'
-import { LOGIN } from '../queries'
+import { useMutation, useApolloClient, useLazyQuery } from '@apollo/client'
+import { LOGIN, ME, ALL_BOOKS, ALL_GENRES } from '../queries'
 import { useNavigate } from 'react-router-dom'
 
 const Login = ({ setToken }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const [login, result] = useMutation(LOGIN)
+  const client = useApolloClient()
   const navigate = useNavigate()
+
+  const [getMe, { data: meData, loading: meLoading }] = useLazyQuery(ME)
+  const [login] = useMutation(LOGIN, {
+    refetchQueries: [{ query: ME }, { query: ALL_BOOKS }, { query: ALL_GENRES }],
+  })
 
   const submit = async (event) => {
     event.preventDefault()
     try {
       const { data } = await login({ variables: { username, password } })
       const token = data.login.value
-      // console.log('Token received from backend:', token)
       localStorage.setItem('token', token)
-      // console.log('Token stored in localStorage:', localStorage.getItem('token'))
       setToken(token)
-      navigate('/') 
+
+      await client.resetStore() // ✅ Clear cache and refetch ME, ALL_BOOKS, etc.
+      getMe() // ✅ manually refetch user info after cache reset
+
+      navigate('/')
+      window.location.reload()  // BAD PRACTISE but tryed everything, setFlag, client.resetStore, useLazyQuery...
     } catch (err) {
       console.error('Login error:', err.message)
     }

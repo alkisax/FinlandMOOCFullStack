@@ -44,6 +44,7 @@ export const typeDefs = `#graphql
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [AuthorWithBookCount!]!
     me: User
+    allGenres: [String!]!
   }
 
   type Mutation {
