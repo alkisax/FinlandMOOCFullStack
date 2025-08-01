@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client'
 import { CREATE_BOOK, ALL_BOOKS_NO_GENRE, ALL_AUTHORS } from '../queries'
 
 
-const NewBook = (props) => {
+const NewBook = ({ loggedIn, setError }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -20,7 +20,11 @@ const NewBook = (props) => {
     console.log('add book:', title)
     
     const numPublished = Number(published)
-    createBook({ variables: {title, published: numPublished, author, genres} })
+    if (loggedIn) {
+      createBook({ variables: {title, published: numPublished, author, genres} })      
+    } else {
+      setError('you have to log in')
+    }
 
     setTitle('')
     setPublished('')

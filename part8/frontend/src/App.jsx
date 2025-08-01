@@ -15,6 +15,7 @@ const App = () => {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
   const [token, setToken] = useState(null)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const { loading: authLoading, error: authError, data: authorData } = useQuery(ALL_AUTHORS)
   const { loading: bookLoading, error: bookError, data: booksData } = useQuery(ALL_BOOKS_NO_GENRE)
@@ -26,15 +27,15 @@ const App = () => {
     const savedToken = localStorage.getItem('token')
     if (savedToken) {
       setToken(savedToken)
+      setLoggedIn(true)
     }
-  }, [])
-
-  useEffect(() => {
     console.log('Token state set to:', token)
-  }, [token])
+    console.log('loged in: ', loggedIn);  
+  }, [loggedIn, token])
 
   const logout = () => {
     setToken(null)
+    setLoggedIn(false)
     localStorage.removeItem('token')
   }
 
@@ -51,8 +52,6 @@ const App = () => {
     if (booksData) console.log('Books:', booksData)
     if (authorData) console.log('Authors:', authorData)
   }, [booksData])
-
-  console.log(booksData);
 
   return (
     <div>
@@ -75,19 +74,26 @@ const App = () => {
         <Link to="/books">
           <button onClick={() => setPage("books")}>books</button>        
         </Link>
-        <Link to="/add">
-          <button onClick={() => setPage("add")}>add book</button>        
-        </Link>
-        <Link to="/login">
-          <button>login</button>
-        </Link>
+        {loggedIn && 
+          <Link to="/add">
+            <button onClick={() => setPage("add")}>add book</button>        
+          </Link>        
+        }
+
+        {!loggedIn ? 
+          (<Link to="/login">
+            <button>login</button>
+          </Link>) :
+          (<button onClick={logout}>logout</button>)        
+        }
+
       </div>
 
       <Routes>
         <Route path="/" element={<Navigate to="/authors" />} />
-        <Route path="/authors" element={<Authors authorData={authorData} loading={loading} />} />
-        <Route path="/books" element={<Books booksData={booksData} loading={loading}  />} />
-        <Route path="/add" element={<NewBook />} />
+        <Route path="/authors" element={<Authors authorData={authorData} loading={loading} loggedIn={loggedIn} />} />
+        <Route path="/books" element={<Books booksData={booksData} loading={loading} />} />
+        <Route path="/add" element={<NewBook loggedIn={loggedIn} setError={setError} />} />
         <Route path="/login" element={<Login setToken={setToken} />} />
       </Routes>
     </div>

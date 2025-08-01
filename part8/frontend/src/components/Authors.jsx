@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { EDIT_AUTHOR, ALL_AUTHORS } from '../queries'
 
-const Authors = ({ authorData, loading }) => {
+const Authors = ({ authorData, loading, loggedIn }) => {
   const [name, setName] = useState("");
   const [born, setBorn] = useState("");
 
@@ -47,39 +47,42 @@ const Authors = ({ authorData, loading }) => {
         </tbody>
       </table>
 
+      {loggedIn && 
+        <div>
+          <h2><strong>Set birthyear</strong></h2>
+          <form onSubmit={submitBirthyear}>
+            <div style={{ display: 'block' }}>
+              <label>name: </label>
+              <select
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              >
+                <option value="" disabled>
+                  Select author
+                </option>
+                {authors.map((auth) => {
+                  return (
+                    <option key={auth.id} value={auth.name}>
+                      {auth.name}
+                    </option>
+                  )
+                })}
+              </select>
+            </div>
+            <div style={{ display: 'block' }}>
+              <label>born: </label>
+              <input 
+                value={born}
+                onChange={({ target }) => setBorn(target.value)}
+              />            
+            </div>
+            <button type="submit">
+              submit
+            </button>
+          </form>
+        </div>
+      }
 
-      <h2><strong>Set birthyear</strong></h2>
-
-        <form onSubmit={submitBirthyear}>
-          <div style={{ display: 'block' }}>
-            <label>name: </label>
-            <select
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            >
-              <option value="" disabled>
-                Select author
-              </option>
-              {authors.map((auth) => {
-                return (
-                  <option key={auth.id} value={auth.name}>
-                    {auth.name}
-                  </option>
-                )
-              })}
-            </select>
-          </div>
-          <div style={{ display: 'block' }}>
-            <label>born: </label>
-            <input 
-              value={born}
-              onChange={({ target }) => setBorn(target.value)}
-            />            
-          </div>
-          <button type="submit">
-            submit
-          </button>
-        </form>
 
 
     </div>

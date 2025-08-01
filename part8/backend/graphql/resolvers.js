@@ -121,7 +121,7 @@ export const resolvers = {
         genres: args.genres,
         author: author._id
       })
-      console.log('entered backend resolvers addbook. Book to add: ', book);
+      // console.log('entered backend resolvers addbook. Book to add: ', book);
 
       try {
         await book.save()        

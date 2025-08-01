@@ -1,4 +1,4 @@
-const Books = ({ booksData, loading }) => {
+const Books = ({ booksData, loading, loggedIn }) => {
   if (loading) return <p>Loading...</p>;
 
   if (!booksData || !booksData.allBooks) return <p>Error loading books</p>;
